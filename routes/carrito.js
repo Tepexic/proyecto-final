@@ -18,7 +18,10 @@ isIdValid = require("./../utils/helpers");
 
 const carritoRouter = Router();
 
-const errorMsg = { error: "carrito no encontrado" };
+const errorMsg = {
+  error: -3,
+  descripcion: 'Carrito no encontrado', 
+};
 
 
 carritoRouter.post("/", async (req, res) => {
@@ -112,7 +115,10 @@ carritoRouter.delete("/:id/productos/:id_prod", async (req, res) => {
       }
       // error si no se encontró
       res.status(404);
-      return res.json(errorMsg);
+      return res.json({
+        error: -4,
+        descripcion: 'Producto no encontrado en carrito', 
+      });
     }
     // error si no se encontró
     res.status(404);
