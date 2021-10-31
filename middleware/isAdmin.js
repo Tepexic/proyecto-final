@@ -2,10 +2,12 @@
  * Checks if user is admin
  */
 
-const ADMIN = true;
+ const AdminManager = require("./../utils/AdminManager");
+ const adminManager = new AdminManager("./routes/data/admin.json");
 
-isAdmin = function(req, res, next) {
-  if (ADMIN) {
+isAdmin = async function(req, res, next) {
+  const userIsAdmin = await adminManager.isAdmin();
+  if (userIsAdmin.admin) {
     return next();
   }
   res.status(403);
