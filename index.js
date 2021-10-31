@@ -8,17 +8,18 @@
 const express = require("express");
 const productos = require("./routes/productos");
 const carrito = require("./routes/carrito");
+const admin = require("./routes/admin");
 
 const server = express();
 
 // middleware
 server.use(express.json());
 server.use(express.urlencoded({ encoded: true }));
-server.use("/static", express.static("public"));
 
 // Usar rutas
 server.use("/api/productos/", productos);
 server.use("/api/carrito/", carrito);
+server.use("/api/admin/", admin);
 
 // rutas no definidas
 server.use((req, res) => {
