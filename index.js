@@ -1,44 +1,13 @@
 /**
-Consigna: Realizar un proyecto de servidor basado en node.js y express que ofrezca una
-API RESTful de productos. En detalle, que incorpore las siguientes rutas:
-  GET '/api/productos' -> devuelve todos los productos.
-  GET '/api/productos/:id' -> devuelve un producto según su id.
-  POST '/api/productos' -> recibe y agrega un producto, y lo devuelve con su id asignado.
-  PUT '/api/productos/:id' -> recibe y actualiza un producto según su id.
-  DELETE '/api/productos/:id' -> elimina un producto según su id.
-
-Cada producto estará representado por un objeto con el siguiente formato:
-{
-    title: (nombre del producto),
-    price: (precio),
-    thumbnail: (url al logo o foto del producto)
-}
-
-Cada ítem almacenado dispondrá de un id numérico proporcionado por el backend, comenzando 
-en 1, y que se irá incrementando a medida de que se incorporen productos. Ese id será
-utilizado para identificar un producto que va a ser listado en forma individual.
-
-Para el caso de que un producto no exista, se devolverá el objeto:
-{ error : 'producto no encontrado' }
-
-Implementar los métodos de la API en una clase separada, utilizando para la persistencia
-de sus productos un contenedor de los desarrollados en clases anteriores.
-
-Incorporar el Router de express en la url base '/api/productos' y configurar todas las
-subrutas en base a este.
-
-Crear un espacio público de servidor que contenga un documento index.html con un
-formulario de ingreso de productos con los datos apropiados.
-
-El servidor debe estar basado en express y debe implementar los mensajes de conexión
-al puerto 8080 y en caso de error, representar la descripción del mismo.
-
-Las respuestas del servidor serán en formato JSON. La funcionalidad será probada
-a través de Postman y del formulario de ingreso.
+ * Deberás entregar el estado de avance de tu aplicación eCommerce Backend, que implemente un servidor de
+ * aplicación basado en la plataforma Node.js y el middleware express. El servidor implementará dos conjuntos
+ * de rutas agrupadas en routers, uno con la url base '/productos' y el otro con '/carrito'. El puerto de
+ * escucha será el 8080 para desarrollo y process.env.PORT para producción en glitch.com
  */
 
 const express = require("express");
 const productos = require("./routes/productos");
+const carrito = require("./routes/carrito");
 
 const server = express();
 
@@ -49,11 +18,16 @@ server.use("/static", express.static("public"));
 
 // Usar rutas
 server.use("/api/productos/", productos);
+server.use("/api/carrito/", carrito);
 
-server.get("/", (req, res) => {
-  console.log("ok");
-  res.send("ok");
-});
+// rutas no definidas
+server.use((req, res) => {
+  res.status(404);
+  res.json({
+    error : -2,
+    descripcion: `ruta ${req.path} metodo ${req.method} no implementada`
+  })
+})
 
 server.on("error", (err) => {
   console.error(err);
