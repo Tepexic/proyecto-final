@@ -12,6 +12,7 @@ const { Router } = express;
 const Contenedor = require("./../utils/Contenedeor");
 const Productos = new Contenedor("./routes/data/productos.json");
 isIdValid = require("./../utils/helpers");
+const isAdmin = require("./../middleware/isAdmin");
 
 const productosRouter = Router();
 
@@ -38,7 +39,7 @@ productosRouter.get("/:id", async (req, res) => {
   return res.json(errorMsg);
 });
 
-productosRouter.post("/", async (req, res) => {
+productosRouter.post("/", isAdmin, async (req, res) => {
   const productoNuevo = req.body;
   productoNuevo.timestamp = Date.now();
   const newId = await Productos.save(productoNuevo);
@@ -49,7 +50,7 @@ productosRouter.post("/", async (req, res) => {
   });
 });
 
-productosRouter.put("/:id", async (req, res) => {
+productosRouter.put("/:id", isAdmin, async (req, res) => {
   const id = parseInt(req.params.id);
   const result = await Productos.updateById(id, req.body);
   if (result) {
@@ -64,7 +65,7 @@ productosRouter.put("/:id", async (req, res) => {
   }
 });
 
-productosRouter.delete("/:id", async (req, res) => {
+productosRouter.delete("/:id", isAdmin, async (req, res) => {
   // mensaje de error
   const id = parseInt(req.params.id);
   // consulta solo si el is es válido
