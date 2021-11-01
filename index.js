@@ -6,6 +6,7 @@
  */
 
 const express = require("express");
+const cors = require("cors");
 const productos = require("./routes/productos");
 const carrito = require("./routes/carrito");
 const admin = require("./routes/admin");
@@ -15,6 +16,7 @@ const server = express();
 // middleware
 server.use(express.json());
 server.use(express.urlencoded({ encoded: true }));
+server.use(cors());
 
 // Usar rutas
 server.use("/api/productos/", productos);
@@ -25,10 +27,10 @@ server.use("/api/admin/", admin);
 server.use((req, res) => {
   res.status(404);
   res.json({
-    error : -2,
-    descripcion: `ruta ${req.path} metodo ${req.method} no implementada`
-  })
-})
+    error: -2,
+    descripcion: `ruta ${req.path} metodo ${req.method} no implementada`,
+  });
+});
 
 server.on("error", (err) => {
   console.error(err);
