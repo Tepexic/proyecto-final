@@ -4,7 +4,7 @@
  * - POST: cambia el estado de administrador del usuario
  */
 
-const AdminManager = require("./../utils/AdminManager");
+const AdminManager = require("./../containers/AdminManager");
 const adminManager = new AdminManager("./routes/data/admin.json");
 
 const express = require('express');

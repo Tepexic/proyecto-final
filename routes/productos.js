@@ -9,7 +9,7 @@
 const express = require("express");
 const { Router } = express;
 
-const Contenedor = require("./../utils/Contenedeor");
+const Contenedor = require("./../containers/Contenedor_file");
 const Productos = new Contenedor("./routes/data/productos.json");
 isIdValid = require("./../utils/helpers");
 const isAdmin = require("./../middleware/isAdmin");
