@@ -35,16 +35,21 @@ class Contenedor {
    * devuelve el id asignado.
    */
   async save(element) {
-    // leer el archivo
-    await this.readFile();
-    // el id nuevo es el ultimo id + 1
-    const newId = this.fileContent.length
-      ? this.fileContent[this.fileContent.length - 1].id + 1
-      : 0;
-    this.fileContent.push({ ...element, id: newId });
-    // Guardar archivo con el nuevo elemento
-    await this.writeFile();
-    return newId;
+    try {
+      // leer el archivo
+      await this.readFile();
+      // el id nuevo es el ultimo id + 1
+      const newId = this.fileContent.length
+        ? this.fileContent[this.fileContent.length - 1]._id + 1
+        : 0;
+      this.fileContent.push({ ...element, _id: newId });
+      // Guardar archivo con el nuevo elemento
+      await this.writeFile();
+      return { data: newId };
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   /**
@@ -52,11 +57,16 @@ class Contenedor {
    * o null si no está.
    */
   async getById(id) {
-    await this.readFile();
-    const searchResult = this.fileContent.filter((e) => {
-      return e.id === id;
-    });
-    return searchResult.length ? searchResult[0] : null;
+    try {
+      await this.readFile();
+      const searchResult = this.fileContent.filter((e) => {
+        return e._id === id;
+      });
+      return { data: searchResult.length ? searchResult[0] : null };
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   /**
@@ -64,18 +74,23 @@ class Contenedor {
    * retorna true si el objeto con ese id existe, false en caso contrario
    */
   async updateById(id, newData) {
-    await this.readFile();
-    const index = this.fileContent.findIndex((e) => {
-      return e.id === id;
-    });
-    if (index > -1) {
-      // reemplazar elemento con los nuevos datos
-      this.fileContent.splice(index, 1, { ...newData, id });
-      this.writeFile();
-      return true;
-    } else {
-      console.log("No se encontró el elemento en la base de datos");
-      return false;
+    try {
+      await this.readFile();
+      const index = this.fileContent.findIndex((e) => {
+        return e._id === id;
+      });
+      if (index > -1) {
+        // reemplazar elemento con los nuevos datos
+        this.fileContent.splice(index, 1, { ...newData, _id: id });
+        this.writeFile();
+        return { data: true };
+      } else {
+        console.log("No se encontró el elemento en la base de datos");
+        return { data: false };
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
   }
 
@@ -84,26 +99,36 @@ class Contenedor {
    * archivo.
    */
   async getAll() {
-    await this.readFile();
-    return this.fileContent;
+    try {
+      await this.readFile();
+      return { data: this.fileContent };
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   /**
-   * deleteById(Number): void - Elimina del archivo el objeto con el id
+   * deleteById(Number): boolean - Elimina del archivo el objeto con el id
    * buscado.
    */
   async deleteById(id) {
-    await this.readFile();
-    const index = this.fileContent.findIndex((e) => {
-      return e.id === id;
-    });
-    if (index > -1) {
-      this.fileContent.splice(index, 1);
-      this.writeFile();
-      return true;
-    } else {
-      console.log("No se encontró el elemento en la base de datos");
-      return false;
+    try {
+      await this.readFile();
+      const index = this.fileContent.findIndex((e) => {
+        return e._id === id;
+      });
+      if (index > -1) {
+        this.fileContent.splice(index, 1);
+        this.writeFile();
+        return { data: true };
+      } else {
+        console.log("No se encontró el elemento en la base de datos");
+        return { data: false };
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
   }
 
@@ -111,8 +136,14 @@ class Contenedor {
    * deleteAll(): void - Elimina todos los objetos presentes en el archivo.
    */
   async deleteAll() {
-    await this.writeFile([]);
-    console.log("Base de datos borrada.");
+    try {
+      await this.writeFile([]);
+      console.log("Base de datos borrada.");
+      return { data: true };
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 }
 
