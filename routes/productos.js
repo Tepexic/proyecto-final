@@ -9,7 +9,7 @@ const express = require("express");
 const { Router } = express;
 
 const { ProductsDao } = require("./../daos");
-const { isIdValid, withAsync } = require("./../utils/helpers");
+const { withAsync } = require("./../utils/helpers");
 const isAdmin = require("./../middleware/isAdmin");
 
 const productosRouter = Router();

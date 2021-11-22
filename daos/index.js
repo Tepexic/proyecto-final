@@ -1,7 +1,12 @@
 const ProductsDAOFile = require("./productos/ProductDAOFile");
-const ProductsDAOMongo = require("./productos/ProductDAOMongo");
 const CartDAOFile = require("./carrito/CartDAOFile");
+
+const ProductsDAOMongo = require("./productos/ProductDAOMongo");
 const CartDAOMongo = require("./carrito/CartDAOMongo");
+
+const ContenedorFirebase = require("./../containers/Contenedor_firebase");
+const ProductsDAOFirebase = require("./productos/ProductDAOFirebase");
+const CartDAOFirebase = require("./carrito/CartDAOFirebase");
 
 if (process.env.TYPE === "mongodb") {
   module.exports = {
@@ -12,6 +17,12 @@ if (process.env.TYPE === "mongodb") {
   module.exports = {
     ProductsDao: ProductsDAOFile,
     CartDao: CartDAOFile,
+  };
+} else if (process.env.TYPE === "firebase") {
+  const Contenedor = new ContenedorFirebase();
+  module.exports = {
+    ProductsDao: new ProductsDAOFirebase(Contenedor),
+    CartDao: new CartDAOFirebase(Contenedor),
   };
 } else {
   console.log("TYPE: ", process.env.TYPE);
