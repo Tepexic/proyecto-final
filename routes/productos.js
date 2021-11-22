@@ -47,7 +47,6 @@ productosRouter.post("/", isAdmin, async (req, res) => {
     ProductsDao,
     productoNuevo
   );
-  console.log(error, data);
   if (error) {
     return res.status(500).json(error);
   } else {

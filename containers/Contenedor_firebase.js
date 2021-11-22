@@ -47,7 +47,7 @@ class Contenedor {
         .get();
       const data = searchResult.data();
       if (data) {
-        return { data };
+        return { data: { _id: id, ...data } };
       } else {
         return { data: null };
       }
@@ -68,7 +68,11 @@ class Contenedor {
         .doc(id)
         .get();
       if (match.data()) {
-        await this.firestore.collection(collectionName).doc(id).update(newData);
+        const newElement = { _id: id, ...newData };
+        await this.firestore
+          .collection(collectionName)
+          .doc(id)
+          .update(newElement);
         return { data: true };
       } else {
         console.log("No se encontró el elemento en la base de datos");
