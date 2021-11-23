@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ea1cc3bd-f456-43dc-9895-e9b1929caf08",
+		"_postman_id": "78934f9c-3ee0-445f-8d5f-555835866f60",
 		"name": "ProyectoFinal",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -44,7 +44,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/productos/2",
+					"raw": "http://localhost:8080/api/productos/W8Gw3PggicQMImgsqKG6",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -53,7 +53,7 @@
 					"path": [
 						"api",
 						"productos",
-						"2"
+						"W8Gw3PggicQMImgsqKG6"
 					]
 				}
 			},
@@ -66,7 +66,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"nombre\": \"Auriculares TRN MT1\",\n    \"descripcion\": \"Auriculares intrauditivos TRN MT1 con Monitor dinámico para DJ\",\n    \"codigo\": 1234567896,\n    \"price\": \"4500\",\n    \"foto\":\n    \"https://ae01.alicdn.com/kf/H0964909d8652417fb5a0c318028f1025z/Auriculares-intrauditivos-TRN-MT1-con-Monitor-din-mico-para-DJ-aud-fonos-IEM-HIFI-deportivos-con.jpg_640x640.jpg\",\n    \"stock\": 10\n}",
+					"raw": "{\n    \"nombre\": \"Auriculares TRN MT1\",\n    \"descripcion\": \"Auriculares intrauditivos TRN MT1 con Monitor dinámico para DJ\",\n    \"codigo\": 1234567896,\n    \"precio\": 3001,\n    \"foto\":\n    \"https://ae01.alicdn.com/kf/H0964909d8652417fb5a0c318028f1025z/Auriculares-intrauditivos-TRN-MT1-con-Monitor-din-mico-para-DJ-aud-fonos-IEM-HIFI-deportivos-con.jpg_640x640.jpg\",\n    \"stock\": 36\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -96,7 +96,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"nombre\": \"Auriculares TRN MT1\",\n    \"descripcion\": \"Auriculares intrauditivos TRN MT1 con Monitor dinámico para DJ\",\n    \"codigo\": 1234567896,\n    \"price\": \"4900\",\n    \"foto\":\n    \"https://ae01.alicdn.com/kf/H0964909d8652417fb5a0c318028f1025z/Auriculares-intrauditivos-TRN-MT1-con-Monitor-din-mico-para-DJ-aud-fonos-IEM-HIFI-deportivos-con.jpg_640x640.jpg\",\n    \"stock\": 36\n}",
+					"raw": "{\n    \"nombre\": \"Auriculares TRN MT1\",\n    \"descripcion\": \"Auriculares intrauditivos TRN MT1 con Monitor dinámico para DJ\",\n    \"codigo\": 1234567896,\n    \"precio\": 3001,\n    \"foto\":\n    \"https://ae01.alicdn.com/kf/H0964909d8652417fb5a0c318028f1025z/Auriculares-intrauditivos-TRN-MT1-con-Monitor-din-mico-para-DJ-aud-fonos-IEM-HIFI-deportivos-con.jpg_640x640.jpg\",\n    \"stock\": 50\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -104,7 +104,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/productos/3",
+					"raw": "http://localhost:8080/api/productos/Fzo2c2gfcHGZsZ1ncIuk",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -113,7 +113,7 @@
 					"path": [
 						"api",
 						"productos",
-						"3"
+						"Fzo2c2gfcHGZsZ1ncIuk"
 					]
 				}
 			},
@@ -125,7 +125,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/productos/3",
+					"raw": "http://localhost:8080/api/productos/3jIjRhV0ZRsQiZ6WLNsX",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -134,7 +134,7 @@
 					"path": [
 						"api",
 						"productos",
-						"3"
+						"3jIjRhV0ZRsQiZ6WLNsX"
 					]
 				}
 			},
@@ -167,7 +167,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/carrito/1",
+					"raw": "http://localhost:8080/api/carrito/y5YxKPbcW2mpK0LYBhTU",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -176,7 +176,7 @@
 					"path": [
 						"api",
 						"carrito",
-						"1"
+						"y5YxKPbcW2mpK0LYBhTU"
 					]
 				}
 			},
@@ -188,7 +188,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/carrito/1/productos",
+					"raw": "http://localhost:8080/api/carrito/DpStxbzenPh5GlGW7MU4/productos",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -197,7 +197,7 @@
 					"path": [
 						"api",
 						"carrito",
-						"1",
+						"DpStxbzenPh5GlGW7MU4",
 						"productos"
 					]
 				}
@@ -211,7 +211,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": 0,\n    \"nombre\": \"Cinta de reparación\",\n    \"descripcion\": \"Cinta de reparación de pantalla de 5x200CM\",\n    \"codigo\": 1234567890,\n    \"precio\": 4922,\n    \"foto\": \"https://ae01.alicdn.com/kf/H1b13e3760cc74dcd9b7e161256820bbdT/Cinta-de-reparaci-n-de-pantalla-de-5x200CM-parche-autoadhesivo-para-puerta-y-ventana-s-per.jpeg_Q90.jpeg_.webp\",\n    \"stock\": 10\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -219,7 +219,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/carrito/1/productos",
+					"raw": "http://localhost:8080/api/carrito/DpStxbzenPh5GlGW7MU4/productos/Fzo2c2gfcHGZsZ1ncIuk",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -228,8 +228,9 @@
 					"path": [
 						"api",
 						"carrito",
-						"1",
-						"productos"
+						"DpStxbzenPh5GlGW7MU4",
+						"productos",
+						"Fzo2c2gfcHGZsZ1ncIuk"
 					]
 				}
 			},
@@ -241,7 +242,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/carrito/1/productos/0",
+					"raw": "http://localhost:8080/api/carrito/DpStxbzenPh5GlGW7MU4/productos/Fzo2c2gfcHGZsZ1ncIuk",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -250,9 +251,9 @@
 					"path": [
 						"api",
 						"carrito",
-						"1",
+						"DpStxbzenPh5GlGW7MU4",
 						"productos",
-						"0"
+						"Fzo2c2gfcHGZsZ1ncIuk"
 					]
 				}
 			},
