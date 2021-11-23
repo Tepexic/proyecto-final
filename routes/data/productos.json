@@ -1,6 +1,6 @@
 [
   {
-    "id": 0,
+    "_id": 0,
     "nombre": "Cinta de reparación",
     "descripcion": "Cinta de reparación de pantalla de 5x200CM",
     "codigo": 1234567890,
@@ -9,7 +9,7 @@
     "stock": 10
   },
   {
-    "id": 1,
+    "_id": 1,
     "nombre": "Interruptor Outemu de 3 pines",
     "descripcion": "Interruptor Outemu de 3 pines para teclado mecánico, interruptores táctiles y silenciosos, RGB LED SMD, color azul y marrón, Compatible con interruptor MX",
     "codigo": 1234567891,
@@ -18,7 +18,7 @@
     "stock": 15
   },
   {
-    "id": 2,
+    "_id": 2,
     "nombre": "Cable de Teclado mecánico",
     "descripcion": "Cable de Teclado mecánico personalizado de 1,7 m",
     "codigo": 1234567892,
