@@ -11,13 +11,13 @@ const { Router } = express;
 const { ProductsDao } = require("./../daos");
 const { withAsync } = require("./../utils/helpers");
 const isAdmin = require("./../middleware/isAdmin");
-const auth = require("./../middleware/auth");
+const { apiAuth } = require("./../middleware/auth");
 
 const productosRouter = Router();
 
 const errorMsg = { error: "producto no encontrado" };
 
-productosRouter.get("/", auth, async (req, res) => {
+productosRouter.get("/", apiAuth, async (req, res) => {
   const { error, data } = await withAsync(ProductsDao.getAll, ProductsDao);
   if (error) {
     return res.status(500).json(error);
@@ -26,7 +26,7 @@ productosRouter.get("/", auth, async (req, res) => {
   }
 });
 
-productosRouter.get("/:id", auth, async (req, res) => {
+productosRouter.get("/:id", apiAuth, async (req, res) => {
   const id =
     process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
   const { error, data } = await withAsync(ProductsDao.getById, ProductsDao, id);
@@ -40,7 +40,7 @@ productosRouter.get("/:id", auth, async (req, res) => {
   }
 });
 
-productosRouter.post("/", auth, isAdmin, async (req, res) => {
+productosRouter.post("/", apiAuth, isAdmin, async (req, res) => {
   const productoNuevo = req.body;
   productoNuevo.timestamp = Date.now();
   const { error, data } = await withAsync(
@@ -59,7 +59,7 @@ productosRouter.post("/", auth, isAdmin, async (req, res) => {
   }
 });
 
-productosRouter.put("/:id", auth, isAdmin, async (req, res) => {
+productosRouter.put("/:id", apiAuth, isAdmin, async (req, res) => {
   const id =
     process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
   const { error, data } = await withAsync(
@@ -86,7 +86,7 @@ productosRouter.put("/:id", auth, isAdmin, async (req, res) => {
   }
 });
 
-productosRouter.delete("/:id", auth, isAdmin, async (req, res) => {
+productosRouter.delete("/:id", apiAuth, isAdmin, async (req, res) => {
   const id =
     process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
   const { error, data } = await withAsync(

@@ -13,7 +13,7 @@ const express = require("express");
 const { Router } = express;
 const { CartDao } = require("./../daos");
 const { withAsync } = require("./../utils/helpers");
-const auth = require("./../middleware/auth");
+const { apiAuth } = require("./../middleware/auth");
 
 const carritoRouter = Router();
 
@@ -22,7 +22,7 @@ const errorMsg = {
   descripcion: "Carrito no encontrado",
 };
 
-carritoRouter.post("/", auth, async (req, res) => {
+carritoRouter.post("/", apiAuth, async (req, res) => {
   const carritoNuevo = {
     timestamp: Date.now(),
     productos: [],
@@ -40,7 +40,7 @@ carritoRouter.post("/", auth, async (req, res) => {
   }
 });
 
-carritoRouter.delete("/:id", auth, async (req, res) => {
+carritoRouter.delete("/:id", apiAuth, async (req, res) => {
   const id =
     process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
   // consulta solo si el is es válido
@@ -55,7 +55,7 @@ carritoRouter.delete("/:id", auth, async (req, res) => {
   }
 });
 
-carritoRouter.get("/:id/productos", auth, async (req, res) => {
+carritoRouter.get("/:id/productos", apiAuth, async (req, res) => {
   const id =
     process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
   // consulta solo si el is es válido
@@ -70,7 +70,7 @@ carritoRouter.get("/:id/productos", auth, async (req, res) => {
   }
 });
 
-carritoRouter.post("/:id/productos/:id_prod", auth, async (req, res) => {
+carritoRouter.post("/:id/productos/:id_prod", apiAuth, async (req, res) => {
   const id =
     process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
   // Obtener el carrito en cuestión
@@ -104,7 +104,7 @@ carritoRouter.post("/:id/productos/:id_prod", auth, async (req, res) => {
   }
 });
 
-carritoRouter.delete("/:id/productos/:id_prod", auth, async (req, res) => {
+carritoRouter.delete("/:id/productos/:id_prod", apiAuth, async (req, res) => {
   const id =
     process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
   const id_prod =

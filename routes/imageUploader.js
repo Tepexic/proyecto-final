@@ -5,10 +5,11 @@ const multer = require("multer");
 const upload = multer({ dest: "./../public/" });
 const path = require("path");
 const fs = require("fs");
+const { apiAuth } = require("./../middleware/auth");
 
 const imageUploader = Router();
 
-imageUploader.post("/", upload.single("avatar"), (req, res) => {
+imageUploader.post("/", apiAuth, upload.single("avatar"), (req, res) => {
   const tempPath = req.file.path;
   const extension = path.extname(req.file.originalname).toLowerCase();
   const uniqueName = generateGuid() + extension;

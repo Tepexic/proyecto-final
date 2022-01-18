@@ -103,7 +103,6 @@ passport.deserializeUser(async (id, done) => {
   } else {
     done(null, data);
   }
-  //User.collection.findById(id, done);
 });
 
 const authRouter = new Router();

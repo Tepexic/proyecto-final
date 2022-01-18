@@ -17,4 +17,4 @@ const apiAuth = function (req, res, next) {
   }
 };
 
-module.exports = auth;
+module.exports = { auth, apiAuth };
