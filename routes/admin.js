@@ -7,17 +7,17 @@
 const AdminManager = require("./../containers/AdminManager");
 const adminManager = new AdminManager("./routes/data/admin.json");
 
-const express = require('express');
+const express = require("express");
 const { Router } = express;
 
 const adminRouter = Router();
 
-adminRouter.get('/', async (req, res) => {
-  const isAdmin =  await adminManager.isAdmin();
+adminRouter.get("/", async (req, res) => {
+  const isAdmin = await adminManager.isAdmin();
   res.json(isAdmin);
 });
 
-adminRouter.post('/', async (req, res) => {
+adminRouter.post("/", async (req, res) => {
   const isAdmin = await adminManager.toggleAdmin();
   res.status(200).json(isAdmin);
 });
