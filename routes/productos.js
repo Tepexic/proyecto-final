@@ -13,6 +13,8 @@ const { withAsync } = require("./../utils/helpers");
 const isAdmin = require("./../middleware/isAdmin");
 const { apiAuth } = require("./../middleware/auth");
 
+const logger = require("./../utils/logger");
+
 const productosRouter = Router();
 
 const errorMsg = { error: "producto no encontrado" };
@@ -20,6 +22,8 @@ const errorMsg = { error: "producto no encontrado" };
 productosRouter.get("/", apiAuth, async (req, res) => {
   const { error, data } = await withAsync(ProductsDao.getAll, ProductsDao);
   if (error) {
+    logger.info({ ruta: req.path, metodo: req.method, error: error });
+    logger.error({ ruta: req.path, metodo: req.method, error: error });
     return res.status(500).json(error);
   } else {
     return res.json(data);
@@ -31,6 +35,8 @@ productosRouter.get("/:id", apiAuth, async (req, res) => {
     process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
   const { error, data } = await withAsync(ProductsDao.getById, ProductsDao, id);
   if (error) {
+    logger.info({ ruta: req.path, metodo: req.method, error: error });
+    logger.error({ ruta: req.path, metodo: req.method, error: error });
     return res.status(500).json(error);
   } else {
     if (data) return res.json(data);
@@ -49,6 +55,8 @@ productosRouter.post("/", apiAuth, isAdmin, async (req, res) => {
     productoNuevo
   );
   if (error) {
+    logger.info({ ruta: req.path, metodo: req.method, error: error });
+    logger.error({ ruta: req.path, metodo: req.method, error: error });
     return res.status(500).json(error);
   } else {
     res.status(201);
@@ -69,6 +77,8 @@ productosRouter.put("/:id", apiAuth, isAdmin, async (req, res) => {
     req.body
   );
   if (error) {
+    logger.info({ ruta: req.path, metodo: req.method, error: error });
+    logger.error({ ruta: req.path, metodo: req.method, error: error });
     return res.status(500).json(error);
   } else {
     if (data) {
@@ -79,6 +89,8 @@ productosRouter.put("/:id", apiAuth, isAdmin, async (req, res) => {
       });
       return;
     } else {
+      logger.info({ ruta: req.path, metodo: req.method, error: errorMsg });
+      logger.error({ ruta: req.path, metodo: req.method, error: errorMsg });
       res.status(404);
       res.send(errorMsg);
       return;
@@ -95,10 +107,14 @@ productosRouter.delete("/:id", apiAuth, isAdmin, async (req, res) => {
     id
   );
   if (error) {
+    logger.info({ ruta: req.path, metodo: req.method, error: error });
+    logger.error({ ruta: req.path, metodo: req.method, error: error });
     return res.status(500).json(error);
   } else {
     if (data) return res.json({ result: "success" });
     // error si no se encontró
+    logger.info({ ruta: req.path, metodo: req.method, error: errorMsg });
+    logger.error({ ruta: req.path, metodo: req.method, error: errorMsg });
     res.status(404);
     return res.json(errorMsg);
   }

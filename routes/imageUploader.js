@@ -6,6 +6,7 @@ const upload = multer({ dest: "./../public/" });
 const path = require("path");
 const fs = require("fs");
 const { apiAuth } = require("./../middleware/auth");
+const logger = require("./../utils/logger");
 
 const imageUploader = Router();
 
@@ -33,7 +34,9 @@ imageUploader.post("/", apiAuth, upload.single("avatar"), (req, res) => {
 });
 
 const handleError = (err, res) => {
-  res.status(500).contentType("text/plain").end("Oops! Something went wrong!");
+  logger.info({ ruta: req.path, metodo: req.method, error: err });
+  logger.error({ ruta: req.path, metodo: req.method, error: err });
+  res.status(500).json(err);
 };
 
 function generateGuid() {

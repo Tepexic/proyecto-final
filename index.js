@@ -2,9 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const productos = require("./routes/productos");
 const carrito = require("./routes/carrito");
-const admin = require("./routes/admin");
 const imageUploader = require("./routes/imageUploader");
 const authRouter = require("./routes/authRouter");
+const logger = require("./utils/logger");
 
 const server = express();
 
@@ -12,7 +12,6 @@ const server = express();
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const session = require("express-session");
-// const auth = require("./middleware/auth");
 
 // middleware
 server.use(express.json());
@@ -39,21 +38,24 @@ server.use(passport.session());
 // Usar rutas
 server.use("/api/productos/", productos);
 server.use("/api/carrito/", carrito);
-server.use("/api/admin/", admin);
 server.use("/api/upload/", imageUploader);
 server.use("/api/auth/", authRouter);
 
 // rutas no definidas
 server.use((req, res) => {
+  const message = `ruta ${req.path} metodo ${req.method} no implementada`;
+  logger.info({ ruta: req.path, metodo: req.method, error: message });
+  logger.warn({ ruta: req.path, metodo: req.method, error: message });
   res.status(404);
   res.json({
     error: -2,
-    descripcion: `ruta ${req.path} metodo ${req.method} no implementada`,
+    descripcion: message,
   });
 });
 
 server.on("error", (err) => {
-  console.error(err);
+  logger.error({ ruta: null, metodo: null, error: err });
+  logger.info({ ruta: null, metodo: null, error: err });
 });
 
 module.exports = server;

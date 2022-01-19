@@ -4,6 +4,7 @@ const { Router } = express;
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
+const logger = require("./../utils/logger");
 
 const { UsersDao } = require("./../daos");
 const { withAsync } = require("./../utils/helpers");
@@ -21,20 +22,39 @@ passport.use(
       username
     );
     if (error) {
-      console.error(error);
+      logger.info({ ruta: req.path, metodo: req.method, error: error });
+      logger.error({ ruta: req.path, metodo: req.method, error: error });
       return done(error);
     } else {
-      console.log(data);
       const user = data;
       if (!user) {
-        console.log("User not found");
-        return done(null, false, { message: "Incorrect username." });
+        const errorMessage = "User not found";
+        logger.info({
+          ruta: req.path,
+          metodo: req.method,
+          error: errorMessage,
+        });
+        logger.warn({
+          ruta: req.path,
+          metodo: req.method,
+          error: errorMessage,
+        });
+        return done(null, false, { message: errorMessage });
       }
       if (!isValidPassword(user, password)) {
-        console.log("invalid password");
-        return done(null, false, { message: "Incorrect password." });
+        const errorMessage = "Invalid password";
+        logger.info({
+          ruta: req.path,
+          metodo: req.method,
+          error: errorMessage,
+        });
+        logger.warn({
+          ruta: req.path,
+          metodo: req.method,
+          error: errorMessage,
+        });
+        return done(null, false, { message: errorMessage });
       }
-      console.log(user);
       return done(null, user);
     }
   })
@@ -54,13 +74,24 @@ passport.use(
         username
       );
       if (error) {
-        console.error("Signup error: ", err);
+        logger.info({ ruta: req.path, metodo: req.method, error: err });
+        logger.error({ ruta: req.path, metodo: req.method, error: err });
         return done(err);
       } else {
         const user = data;
         if (user) {
-          console.log("User already exists");
-          return done(null, null, { message: "User already exists" });
+          const errorMessage = "User already exists";
+          logger.info({
+            ruta: req.path,
+            metodo: req.method,
+            error: errorMessage,
+          });
+          logger.warn({
+            ruta: req.path,
+            metodo: req.method,
+            error: errorMessage,
+          });
+          return done(null, null, { message: errorMessage });
         }
         const newUser = {
           username: username,
@@ -79,9 +110,13 @@ passport.use(
           newUser,
           false // return whole document, not just id
         );
-        console.log(userError, userData);
         if (userError) {
-          console.error("Signup error: ", userError);
+          logger.info({ ruta: req.path, metodo: req.method, error: userError });
+          logger.error({
+            ruta: req.path,
+            metodo: req.method,
+            error: userError,
+          });
           return done(userError);
         } else {
           return done(null, userData);
@@ -98,7 +133,8 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   const { error, data } = await withAsync(UsersDao.getById, UsersDao, id);
   if (error) {
-    console.error(error);
+    logger.info({ ruta: req.path, metodo: req.method, error });
+    logger.error({ ruta: req.path, metodo: req.method, error });
     done(error, null);
   } else {
     done(null, data);

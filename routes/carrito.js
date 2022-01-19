@@ -14,6 +14,7 @@ const { Router } = express;
 const { CartDao } = require("./../daos");
 const { withAsync } = require("./../utils/helpers");
 const { apiAuth } = require("./../middleware/auth");
+const logger = require("./../utils/logger");
 
 const carritoRouter = Router();
 
@@ -29,6 +30,8 @@ carritoRouter.post("/", apiAuth, async (req, res) => {
   };
   const { error, data } = await withAsync(CartDao.save, CartDao, carritoNuevo);
   if (error) {
+    logger.info({ ruta: req.path, metodo: req.method, error: error });
+    logger.error({ ruta: req.path, metodo: req.method, error: error });
     res.status(500).json(error);
   } else {
     const newId = data;
@@ -46,10 +49,14 @@ carritoRouter.delete("/:id", apiAuth, async (req, res) => {
   // consulta solo si el is es válido
   const { error, data } = await withAsync(CartDao.deleteById, CartDao, id);
   if (error) {
+    logger.info({ ruta: req.path, metodo: req.method, error: error });
+    logger.error({ ruta: req.path, metodo: req.method, error: error });
     res.status(500).json(error);
   } else {
     if (data) return res.json({ result: "success" });
     // error si no se encontró
+    logger.info({ ruta: req.path, metodo: req.method, error: errorMsg });
+    logger.error({ ruta: req.path, metodo: req.method, error: errorMsg });
     res.status(404);
     return res.json(errorMsg);
   }
@@ -61,10 +68,14 @@ carritoRouter.get("/:id/productos", apiAuth, async (req, res) => {
   // consulta solo si el is es válido
   const { error, data } = await withAsync(CartDao.getById, CartDao, id);
   if (error) {
+    logger.info({ ruta: req.path, metodo: req.method, error: error });
+    logger.error({ ruta: req.path, metodo: req.method, error: error });
     res.status(500).json(error);
   } else {
     if (data) return res.json(data.productos);
     // error si no se encontró
+    logger.info({ ruta: req.path, metodo: req.method, error: errorMsg });
+    logger.error({ ruta: req.path, metodo: req.method, error: errorMsg });
     res.status(404);
     return res.json(errorMsg);
   }
@@ -76,6 +87,8 @@ carritoRouter.post("/:id/productos/:id_prod", apiAuth, async (req, res) => {
   // Obtener el carrito en cuestión
   const { error, data } = await withAsync(CartDao.getById, CartDao, id);
   if (error) {
+    logger.info({ ruta: req.path, metodo: req.method, error: error });
+    logger.error({ ruta: req.path, metodo: req.method, error: error });
     res.status(500).json(error);
   } else {
     if (data) {
@@ -89,6 +102,16 @@ carritoRouter.post("/:id/productos/:id_prod", apiAuth, async (req, res) => {
         data
       );
       if (updateResult.error) {
+        logger.info({
+          ruta: req.path,
+          metodo: req.method,
+          error: updateResult.error,
+        });
+        logger.error({
+          ruta: req.path,
+          metodo: req.method,
+          error: updateResult.error,
+        });
         res.status(500).json(updateResult.error);
       } else {
         res.status(201);
@@ -99,6 +122,8 @@ carritoRouter.post("/:id/productos/:id_prod", apiAuth, async (req, res) => {
       }
     }
     // error si no se encontró
+    logger.info({ ruta: req.path, metodo: req.method, error: errorMsg });
+    logger.error({ ruta: req.path, metodo: req.method, error: errorMsg });
     res.status(404);
     return res.json(errorMsg);
   }
@@ -113,6 +138,8 @@ carritoRouter.delete("/:id/productos/:id_prod", apiAuth, async (req, res) => {
       : req.params.id_prod;
   const { error, data } = await withAsync(CartDao.getById, CartDao, id);
   if (error) {
+    logger.info({ ruta: req.path, metodo: req.method, error: error });
+    logger.error({ ruta: req.path, metodo: req.method, error: error });
     res.status(500).json(error);
   } else {
     if (data) {
@@ -126,6 +153,16 @@ carritoRouter.delete("/:id/productos/:id_prod", apiAuth, async (req, res) => {
           data
         );
         if (updateResult.error) {
+          logger.info({
+            ruta: req.path,
+            metodo: req.method,
+            error: updateResult.error,
+          });
+          logger.error({
+            ruta: req.path,
+            metodo: req.method,
+            error: updateResult.error,
+          });
           res.status(500).json(updateResult.error);
         } else {
           res.status(200);
@@ -136,14 +173,19 @@ carritoRouter.delete("/:id/productos/:id_prod", apiAuth, async (req, res) => {
         }
       }
       // error si no se encontró
-      res.status(404);
-      return res.json({
+      const customError = {
         error: -4,
         descripcion: "Producto no encontrado en carrito",
-      });
+      };
+      logger.info({ ruta: req.path, metodo: req.method, error: customError });
+      logger.error({ ruta: req.path, metodo: req.method, error: customError });
+      res.status(404);
+      return res.json(customError);
     }
   }
   // error si no se encontró
+  logger.info({ ruta: req.path, metodo: req.method, error: errorMsg });
+  logger.error({ ruta: req.path, metodo: req.method, error: errorMsg });
   res.status(404);
   return res.json(errorMsg);
 });

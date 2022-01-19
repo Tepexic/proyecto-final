@@ -1,20 +1,10 @@
-/**
- * Checks if user is admin
- */
-
- const AdminManager = require("./../containers/AdminManager");
- const adminManager = new AdminManager("./routes/data/admin.json");
-
-isAdmin = async function(req, res, next) {
-  const userIsAdmin = await adminManager.isAdmin();
-  if (userIsAdmin.admin) {
-    return next();
+// Checks if user is admin
+const isAdmin = (req, res, next) => {
+  if (req.user.isAdmin) {
+    next();
+  } else {
+    res.status(403).send();
   }
-  res.status(403);
-  res.json({
-    error: -1,
-    descripcion: `ruta ${req.path} metodo ${req.method} no autorizada`, 
-  })
 };
 
 module.exports = isAdmin;
