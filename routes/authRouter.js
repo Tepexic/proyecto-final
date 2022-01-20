@@ -1,5 +1,6 @@
 const express = require("express");
 const { Router } = express;
+const transporter = require("../utils/mailer");
 
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
@@ -119,6 +120,31 @@ passport.use(
           });
           return done(userError);
         } else {
+          const mailContent = {
+            from: "Ecommerce Projcto Final",
+            to: process.env.EMAIL,
+            subject: "Nuevo registro",
+            html: `<h1>Nuevo usuario registrado</h1>
+            <ul>
+            <li>Nombre: ${req.body.name}</li>
+            <li>Email: ${req.body.email}</li>
+            <li>Dirección: ${req.body.address}</li>
+            <li>Edad: ${req.body.age}</li>
+            <li>Teléfono: ${req.body.phone}</li>
+            <li>Avatar: ${req.body.avatar}</li>
+            <li>Admin: ${req.body.isAdmin}</li>
+            <ul>
+            <p>Registrado: ${new Date().toLocaleString()}</p>
+            `,
+          };
+          try {
+            const info = await transporter.sendMail(mailContent);
+            logger.info({ ruta: req.path, metodo: req.method, info });
+          } catch (err) {
+            logger.info({ ruta: req.path, metodo: req.method, error: err });
+            logger.error({ ruta: req.path, metodo: req.method, error: err });
+            return done(err);
+          }
           return done(null, userData);
         }
       }
