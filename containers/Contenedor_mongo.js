@@ -11,8 +11,6 @@ class Contenedor {
     if (this.connection) {
       return;
     }
-    console.log("Conectando a la base de datos...");
-    console.log(uri);
     this.connection = await mongoose.connect(uri);
   }
 
@@ -23,7 +21,6 @@ class Contenedor {
   async save(element, returnIdOnly = true) {
     try {
       const document = await this.collection.create(element);
-      console.log("created: ", { document });
       if (returnIdOnly) {
         return { data: document._id, error: null };
       } else {
@@ -158,6 +155,23 @@ class Contenedor {
           return { data: searchResult.length ? searchResult : null };
         } else {
           return { data: searchResult };
+        }
+      }
+      return { data: null };
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  async getByIds(ids) {
+    try {
+      const searchResult = await this.collection.find({ _id: { $in: ids } });
+      if (searchResult) {
+        if (process.env.TYPE === "file") {
+          return { data: searchResult.length ? searchResult : null };
+        } else {
+          return { data: searchResult.map((doc) => doc.toObject()) };
         }
       }
       return { data: null };
