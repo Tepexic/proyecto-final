@@ -18,7 +18,10 @@ const { withAsync } = require("./../utils/helpers");
 const { apiAuth } = require("./../middleware/auth");
 const logger = require("./../utils/logger");
 const transporter = require("../utils/mailer");
-const smsClient = require("./../utils/sms");
+const smsClient = require("twilio")(
+  process.env.TWILIO_SID,
+  process.env.TWILIO_TOKEN
+);
 
 const carritoRouter = Router();
 
@@ -294,19 +297,35 @@ carritoRouter.post("/:id/comprar", apiAuth, async (req, res) => {
         logger.error({ ruta: req.path, metodo: req.method, error: err });
         return res.status(500).json(err);
       }
-      // // Mandar mensaje de confirmación
+
+      // // Mandar whatsapp al administrador
       // try {
       //   const message = await smsClient.messages.create({
       //     body: `Nuevo pedido de ${req.user.name} - ${req.user.email}`,
-      //     from: process.env.TWILIO_NUMBER,
-      //     to: req.user.phone,
+      //     from: `whatsapp:${process.env.TWILIO_WHATSAPP}`,
+      //     to: `whatsapp:${process.env.ADMIN_WHATSAPP}`,
       //   });
       //   logger.info({ ruta: req.path, metodo: req.method, message });
       // } catch (err) {
       //   logger.info({ ruta: req.path, metodo: req.method, error: err });
       //   logger.error({ ruta: req.path, metodo: req.method, error: err });
-      //   res.status(500).json(err);
+      //   return res.status(500).json(err);
       // }
+
+      // Mandar mensaje de confirmación
+      try {
+        const message = await smsClient.messages.create({
+          body: "Su pedido ha sido recibido y se encuentra en proceso de envío",
+          messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE,
+          to: req.user.phone,
+        });
+        logger.info({ ruta: req.path, metodo: req.method, message });
+      } catch (err) {
+        logger.info({ ruta: req.path, metodo: req.method, error: err });
+        logger.error({ ruta: req.path, metodo: req.method, error: err });
+        return res.status(500).json(err);
+      }
+
       // Borrar carrito
       const { error: deleteError, data: deleteData } = await withAsync(
         CartDao.deleteById,
