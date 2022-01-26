@@ -14,9 +14,14 @@ const passport = require("passport");
 const session = require("express-session");
 
 // middleware
+server.use(
+  cors({
+    origin: ["http://localhost:8080", "http://localhost:8081"],
+    credentials: true,
+  })
+);
 server.use(express.json());
 server.use(express.urlencoded({ encoded: true }));
-server.use(cors());
 server.use(express.static("public"));
 server.use(
   session({

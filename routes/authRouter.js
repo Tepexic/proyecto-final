@@ -23,21 +23,21 @@ passport.use(
       username
     );
     if (error) {
-      logger.info({ ruta: req.path, metodo: req.method, error: error });
-      logger.error({ ruta: req.path, metodo: req.method, error: error });
+      logger.info({ ruta: "/auth/login", metodo: "POST", error: error });
+      logger.error({ ruta: "/auth/login", metodo: "POST", error: error });
       return done(error);
     } else {
       const user = data;
       if (!user) {
         const errorMessage = "User not found";
         logger.info({
-          ruta: req.path,
-          metodo: req.method,
+          ruta: "/auth/login",
+          metodo: "POST",
           error: errorMessage,
         });
         logger.warn({
-          ruta: req.path,
-          metodo: req.method,
+          ruta: "/auth/login",
+          metodo: "POST",
           error: errorMessage,
         });
         return done(null, false, { message: errorMessage });
@@ -45,13 +45,13 @@ passport.use(
       if (!isValidPassword(user, password)) {
         const errorMessage = "Invalid password";
         logger.info({
-          ruta: req.path,
-          metodo: req.method,
+          ruta: "/auth/login",
+          metodo: "POST",
           error: errorMessage,
         });
         logger.warn({
-          ruta: req.path,
-          metodo: req.method,
+          ruta: "/auth/login",
+          metodo: "POST",
           error: errorMessage,
         });
         return done(null, false, { message: errorMessage });

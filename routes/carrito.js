@@ -298,19 +298,20 @@ carritoRouter.post("/:id/comprar", apiAuth, async (req, res) => {
         return res.status(500).json(err);
       }
 
-      // // Mandar whatsapp al administrador
-      // try {
-      //   const message = await smsClient.messages.create({
-      //     body: `Nuevo pedido de ${req.user.name} - ${req.user.email}`,
-      //     from: `whatsapp:${process.env.TWILIO_WHATSAPP}`,
-      //     to: `whatsapp:${process.env.ADMIN_WHATSAPP}`,
-      //   });
-      //   logger.info({ ruta: req.path, metodo: req.method, message });
-      // } catch (err) {
-      //   logger.info({ ruta: req.path, metodo: req.method, error: err });
-      //   logger.error({ ruta: req.path, metodo: req.method, error: err });
-      //   return res.status(500).json(err);
-      // }
+      // Mandar whatsapp al administrador
+      const options = {
+        body: `Nuevo pedido de ${req.user.name} - ${req.user.email}`,
+        from: `whatsapp:${process.env.TWILIO_WHATSAPP}`,
+        to: `whatsapp:${process.env.ADMIN_WHATSAPP}`,
+      };
+      try {
+        const whats = await smsClient.messages.create(options);
+        logger.info({ ruta: req.path, metodo: req.method, whats });
+      } catch (err) {
+        logger.info({ ruta: req.path, metodo: req.method, error: err });
+        logger.error({ ruta: req.path, metodo: req.method, error: err });
+        return res.status(500).json(err);
+      }
 
       // Mandar mensaje de confirmación
       try {

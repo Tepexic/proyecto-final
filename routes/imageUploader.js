@@ -5,17 +5,20 @@ const multer = require("multer");
 const upload = multer({ dest: "./../public/" });
 const path = require("path");
 const fs = require("fs");
-const { apiAuth } = require("./../middleware/auth");
 const logger = require("./../utils/logger");
 
 const imageUploader = Router();
 
-imageUploader.post("/", apiAuth, upload.single("avatar"), (req, res) => {
+imageUploader.post("/", upload.single("avatar"), (req, res) => {
   const tempPath = req.file.path;
   const extension = path.extname(req.file.originalname).toLowerCase();
   const uniqueName = generateGuid() + extension;
   const targetPath = path.join(__dirname, `./../public/${uniqueName}`);
-  if (extension === ".png") {
+  if (
+    (extension === ".png") |
+    (extension === ".jpg") |
+    (extension === ".jpeg")
+  ) {
     fs.rename(tempPath, targetPath, (err) => {
       if (err) return handleError(err, res);
       res.status(201).json({
@@ -28,7 +31,7 @@ imageUploader.post("/", apiAuth, upload.single("avatar"), (req, res) => {
       res
         .status(403)
         .contentType("text/plain")
-        .end("Only .png files are allowed!");
+        .end("Only .png/.jpg files are allowed!");
     });
   }
 });
