@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const options = require("./../config");
+const uri = `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.foboz.mongodb.net/${process.env.USERS_DB}?retryWrites=true&w=majority`;
 
 class Contenedor {
   constructor(collectionName, schema) {
@@ -11,20 +11,21 @@ class Contenedor {
     if (this.connection) {
       return;
     }
-    console.log("Conectando a la base de datos...");
-    console.log(options.mongodb.uri);
-    this.connection = await mongoose.connect(options.mongodb.uri);
+    this.connection = await mongoose.connect(uri);
   }
 
   /**
    * save(Object): ID - Recibe un objeto, lo guarda y
    * devuelve el id asignado.
    */
-  async save(element) {
+  async save(element, returnIdOnly = true) {
     try {
       const document = await this.collection.create(element);
-      console.log("created: ", { document });
-      return { data: document._id, error: null };
+      if (returnIdOnly) {
+        return { data: document._id, error: null };
+      } else {
+        return { data: document, error: null };
+      }
     } catch (error) {
       console.error(error);
       throw error;
@@ -138,6 +139,42 @@ class Contenedor {
           deletedCount,
         },
       };
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  async getByProperty(property, value) {
+    try {
+      const searchCriteria = {};
+      searchCriteria[property] = value;
+      const searchResult = await this.collection.findOne(searchCriteria);
+      if (searchResult) {
+        if (process.env.TYPE === "file") {
+          return { data: searchResult.length ? searchResult : null };
+        } else {
+          return { data: searchResult };
+        }
+      }
+      return { data: null };
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  async getByIds(ids) {
+    try {
+      const searchResult = await this.collection.find({ _id: { $in: ids } });
+      if (searchResult) {
+        if (process.env.TYPE === "file") {
+          return { data: searchResult.length ? searchResult : null };
+        } else {
+          return { data: searchResult.map((doc) => doc.toObject()) };
+        }
+      }
+      return { data: null };
     } catch (error) {
       console.error(error);
       throw error;
