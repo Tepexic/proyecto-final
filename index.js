@@ -4,6 +4,7 @@ const productos = require("./routes/productos");
 const carrito = require("./routes/carrito");
 const imageUploader = require("./routes/imageUploader");
 const authRouter = require("./routes/authRouter");
+const adminRouter = require("./routes/adminManager");
 const logger = require("./utils/logger");
 
 const server = express();
@@ -45,6 +46,7 @@ server.use("/api/productos/", productos);
 server.use("/api/carrito/", carrito);
 server.use("/api/upload/", imageUploader);
 server.use("/api/auth/", authRouter);
+server.use("/api/admin/", adminRouter);
 
 // rutas no definidas
 server.use((req, res) => {

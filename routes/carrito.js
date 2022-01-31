@@ -14,6 +14,7 @@ const express = require("express");
 const { Router } = express;
 const { CartDao } = require("./../daos");
 const { ProductsDao } = require("./../daos");
+const { AdminDao } = require("./../daos");
 const { withAsync } = require("./../utils/helpers");
 const { apiAuth } = require("./../middleware/auth");
 const logger = require("./../utils/logger");
@@ -245,11 +246,15 @@ carritoRouter.post("/:id/comprar", apiAuth, async (req, res) => {
         },
         date: new Date(),
       };
-
+      const { data: adminData } = await withAsync(
+        AdminDao.getById,
+        AdminDao,
+        process.env.ADMIN_ID
+      );
       // Mandar correo con los productos
       const mailContent = {
         from: "Ecommerce Proyecto Final",
-        to: process.env.EMAIL,
+        to: adminData.email,
         subject: `Nuevo pedido de ${order.user.name} - ${order.user.email}`,
         html: `<h1>Nuevo pedido registrado</h1>
         <table>
@@ -299,10 +304,11 @@ carritoRouter.post("/:id/comprar", apiAuth, async (req, res) => {
       }
 
       // Mandar whatsapp al administrador
+
       const options = {
         body: `Nuevo pedido de ${req.user.name} - ${req.user.email}`,
         from: `whatsapp:${process.env.TWILIO_WHATSAPP}`,
-        to: `whatsapp:${process.env.ADMIN_WHATSAPP}`,
+        to: `whatsapp:${adminData.phone}`,
       };
       try {
         const whats = await smsClient.messages.create(options);

@@ -6,8 +6,10 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const logger = require("./../utils/logger");
+const { apiAuth } = require("./../middleware/auth");
 
 const { UsersDao } = require("./../daos");
+const { AdminDao } = require("./../daos");
 const { withAsync } = require("./../utils/helpers");
 
 /**
@@ -120,9 +122,14 @@ passport.use(
           });
           return done(userError);
         } else {
+          const { data } = await withAsync(
+            AdminDao.getById,
+            AdminDao,
+            process.env.ADMIN_ID
+          );
           const mailContent = {
-            from: "Ecommerce Projcto Final",
-            to: process.env.EMAIL,
+            from: "Ecommerce Proyecto Final",
+            to: data.email,
             subject: "Nuevo registro",
             html: `<h1>Nuevo usuario registrado</h1>
             <ul>
@@ -201,6 +208,18 @@ authRouter.post("/signup", function (req, res, next) {
       return res.status(200).json({ error: null, user: user });
     });
   })(req, res, next);
+});
+
+authRouter.post("/logout", apiAuth, function (req, res) {
+  req.logout();
+  res.status(200).json({ error: null, data: "Succesfully logged out" });
+});
+
+authRouter.get("/account", apiAuth, function (req, res) {
+  res.status(200).json({
+    error: null,
+    data: req.user,
+  });
 });
 
 // Utils
