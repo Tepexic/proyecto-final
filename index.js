@@ -15,6 +15,11 @@ const passport = require("passport");
 const session = require("express-session");
 
 // middleware
+const env = process.env.NODE_ENV || "development";
+const origin =
+  env === "development"
+    ? "http://localhost:8081"
+    : "https://proyecto-final-coderhouse.netlify.app/";
 server.use(
   cors({
     origin: [
@@ -27,6 +32,7 @@ server.use(
 );
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", origin);
   next();
 });
 server.use(express.json());
