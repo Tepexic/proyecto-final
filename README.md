@@ -2,6 +2,85 @@
 
 API RESTful de productos y carrito de compras. La persistencia de los datos y sesiones de usuarios se realiza en Mongo Atlas.
 
+## Postman:
+
+- El archivo `ProyectoFinal.postman_collection.json` contiene la colección de postman de todos los endpoints implementados
+
+## Instalación
+
+Para instalar las dependencias: `npm install`
+
+Correr:
+`npm run serve`
+O bien, en modo desarrollo con nodemon:
+`npm run dev`
+
+El archivo `.env` debe contener:
+
+```
+# Options: file, mongodb, firebase
+TYPE=mongodb
+# Mongo DB settings
+MONGO_DB_USER=jesus
+MONGO_DB_PASSWORD=8dQg6XUWTuRWZV
+USERS_DB=pf_users
+## Modo cluster
+SERVER_MODE=cluster
+## Node mailer
+EMAIL=bethany.tillman27@ethereal.email
+EMAIL_PASSWORD=pQuppmEj5TgFPX7XJM
+## Twilio
+TWILIO_SID=ACcc05e6c84ed93285de403cae28d4a553
+TWILIO_TOKEN=a3928ecd6e86ada7efbba85cd200d60b
+TWILIO_MESSAGING_SERVICE=MG65e1e89b327bf36fb96ba78616d87d50
+TWILIO_WHATSAPP=+14155238886
+```
+
+El proyecto se encuentra desplegado en Heroku (back end) y Netlify (front end).
+El front end se encuentra hecho en Vue:
+
+- Repositorio: [Tepexic/proyecto-final-front](https://github.com/Tepexic/proyecto-final-front)
+- Proyecto desplegado: [https://proyecto-final-coderhouse.netlify.app/](https://proyecto-final-coderhouse.netlify.app/tienda/productos)
+
+Este es el repositorio para el backend, y se encuentra desplegado en Heroku en: [https://proyecto-final-coderhouse.herokuapp.com/](https://proyecto-final-coderhouse.herokuapp.com/)
+
+Para que pueda enviarse el whatsapp al administrador, debe enviarse primero un mensaje al `+14155238886` con el mensaje `join touch-sets`
+
+Las credenciales del usuario de prueba son:
+
+- correo: `usuario@coder.com`
+- contraseña: `coderhouse`
+
+Hay una parte de la consigna (`La imagen se podrá subir al servidor y se guardará en una carpeta pública del mismo a la cual se tenga acceso por url.`) que no es posible hacer en Heroku, debido a que las carpetas publicas dentro de heroku son de solo lectura. Para poder entregar el desafio, decidi utilizar S3 de AWS para guardar las imagenes.
+
+## Pruebas de carga
+
+El resultado de la prueba esta en `load-testing/cluster.txt` y `load-testing/fork.txt`, con su respectivo archivo de configuración que obtiene la cookie.
+
+Lo que se aprecia de ls pruebas es que en el modo cluster, las respuestas del servidor son mas rapidas:
+
+```
+http.response_time:
+  min: ......................................................................... 212
+  max: ......................................................................... 251
+  median: ...................................................................... 223.7
+  p95: ......................................................................... 247.2
+  p99: ......................................................................... 252.2
+```
+
+que en el modo fork:
+
+```
+http.response_time:
+  min: ......................................................................... 211
+  max: ......................................................................... 261
+  median: ...................................................................... 242.3
+  p95: ......................................................................... 252.2
+  p99: ......................................................................... 252.2
+```
+
+Quizas para este endpoint en especifico la mejora sea mínima, pero a gran escala, la ventaja tambien aumenta.
+
 ## Rutas
 
 ### Usuarios
@@ -66,15 +145,3 @@ Cada carrito estará representado por un objeto con el siguiente formato:
     "productos": []
 }
 ```
-
-## Notas Adicionales:
-
-- El archivo `ProyectoFinal.postman_collection.json` contiene la colección de postman de todos los endpoints implementados
-
-## Instalación
-
-`npm install`
-Correr:
-`npm run serve`
-O bien, en modo desarrollo con nodemon:
-`npm run dev`
