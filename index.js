@@ -25,6 +25,10 @@ server.use(
     credentials: true,
   })
 );
+server.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  next();
+});
 server.use(express.json());
 server.use(express.urlencoded({ encoded: true }));
 server.use(express.static("public"));
