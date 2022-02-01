@@ -2,27 +2,21 @@
 	"info": {
 		"_postman_id": "78934f9c-3ee0-445f-8d5f-555835866f60",
 		"name": "ProyectoFinal",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Todos los productos",
 			"request": {
 				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/productos/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"productos",
-						""
-					]
-				}
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{cookie}}",
+						"type": "default"
+					}
+				],
+				"url": "http://localhost:8080/api/productos/"
 			},
 			"response": []
 		},
@@ -33,7 +27,13 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{eCommerceCookie}}",
+						"type": "default"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "",
@@ -43,19 +43,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:8080/api/productos/W8Gw3PggicQMImgsqKG6",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"productos",
-						"W8Gw3PggicQMImgsqKG6"
-					]
-				}
+				"url": "http://localhost:8080/api/productos/{{producto}}"
 			},
 			"response": []
 		},
@@ -63,7 +51,13 @@
 			"name": "Nuevo producto",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{cookie}}",
+						"type": "default"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"nombre\": \"Auriculares TRN MT1\",\n    \"descripcion\": \"Auriculares intrauditivos TRN MT1 con Monitor dinámico para DJ\",\n    \"codigo\": 1234567896,\n    \"precio\": 3001,\n    \"foto\":\n    \"https://ae01.alicdn.com/kf/H0964909d8652417fb5a0c318028f1025z/Auriculares-intrauditivos-TRN-MT1-con-Monitor-din-mico-para-DJ-aud-fonos-IEM-HIFI-deportivos-con.jpg_640x640.jpg\",\n    \"stock\": 36\n}",
@@ -73,19 +67,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:8080/api/productos/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"productos",
-						""
-					]
-				}
+				"url": "http://localhost:8080/api/productos/"
 			},
 			"response": []
 		},
@@ -93,7 +75,13 @@
 			"name": "Actualizar producto por id",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{cookie}}",
+						"type": "default"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"nombre\": \"Auriculares TRN MT1\",\n    \"descripcion\": \"Auriculares intrauditivos TRN MT1 con Monitor dinámico para DJ\",\n    \"codigo\": 1234567896,\n    \"precio\": 3001,\n    \"foto\":\n    \"https://ae01.alicdn.com/kf/H0964909d8652417fb5a0c318028f1025z/Auriculares-intrauditivos-TRN-MT1-con-Monitor-din-mico-para-DJ-aud-fonos-IEM-HIFI-deportivos-con.jpg_640x640.jpg\",\n    \"stock\": 50\n}",
@@ -103,19 +91,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:8080/api/productos/Fzo2c2gfcHGZsZ1ncIuk",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"productos",
-						"Fzo2c2gfcHGZsZ1ncIuk"
-					]
-				}
+				"url": "http://localhost:8080/api/productos/{{producto}}"
 			},
 			"response": []
 		},
@@ -123,20 +99,14 @@
 			"name": "Borrar producto por ID",
 			"request": {
 				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/productos/3jIjRhV0ZRsQiZ6WLNsX",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"productos",
-						"3jIjRhV0ZRsQiZ6WLNsX"
-					]
-				}
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{cookie}}",
+						"type": "default"
+					}
+				],
+				"url": "http://localhost:8080/api/productos/{{producto}}"
 			},
 			"response": []
 		},
@@ -144,20 +114,14 @@
 			"name": "Nuevo carrito",
 			"request": {
 				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/carrito/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"carrito",
-						""
-					]
-				}
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{cookie}}",
+						"type": "default"
+					}
+				],
+				"url": "http://localhost:8080/api/carrito/"
 			},
 			"response": []
 		},
@@ -165,20 +129,14 @@
 			"name": "Borrar carrito",
 			"request": {
 				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/carrito/y5YxKPbcW2mpK0LYBhTU",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"carrito",
-						"y5YxKPbcW2mpK0LYBhTU"
-					]
-				}
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{cookie}}",
+						"type": "default"
+					}
+				],
+				"url": "http://localhost:8080/api/carrito/y5YxKPbcW2mpK0LYBhTU"
 			},
 			"response": []
 		},
@@ -186,21 +144,14 @@
 			"name": "Obtener productos del carrito por id",
 			"request": {
 				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/carrito/DpStxbzenPh5GlGW7MU4/productos",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"carrito",
-						"DpStxbzenPh5GlGW7MU4",
-						"productos"
-					]
-				}
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{cookie}}",
+						"type": "default"
+					}
+				],
+				"url": "http://localhost:8080/api/carrito/61f73b63b1b184dbd2c2444f/productos"
 			},
 			"response": []
 		},
@@ -208,7 +159,13 @@
 			"name": "Agregar producto al carrito por id",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{cookie}}",
+						"type": "default"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "",
@@ -218,21 +175,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:8080/api/carrito/DpStxbzenPh5GlGW7MU4/productos/Fzo2c2gfcHGZsZ1ncIuk",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"carrito",
-						"DpStxbzenPh5GlGW7MU4",
-						"productos",
-						"Fzo2c2gfcHGZsZ1ncIuk"
-					]
-				}
+				"url": "http://localhost:8080/api/carrito/61f8683df8f777123661dfe0/productos/61e71f85b436e1e7a79ae3bf"
 			},
 			"response": []
 		},
@@ -240,66 +183,155 @@
 			"name": "Borrar producto del carrito por id",
 			"request": {
 				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/carrito/DpStxbzenPh5GlGW7MU4/productos/Fzo2c2gfcHGZsZ1ncIuk",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"carrito",
-						"DpStxbzenPh5GlGW7MU4",
-						"productos",
-						"Fzo2c2gfcHGZsZ1ncIuk"
-					]
-				}
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{cookie}}",
+						"type": "default"
+					}
+				],
+				"url": "http://localhost:8080/api/carrito/{{carrito}}/productos/{{producto}}"
 			},
 			"response": []
 		},
 		{
-			"name": "Obtener si el usuario es admin",
+			"name": "Comprar Carrito",
 			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/admin/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"admin",
-						""
-					]
-				}
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{cookie}}",
+						"type": "default"
+					}
+				],
+				"url": "http://localhost:8080/api/carrito/61f8683df8f777123661dfe0/comprar"
 			},
 			"response": []
 		},
 		{
-			"name": "Cambiar estado del usuario",
+			"name": "Subir avatar",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{cookie}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "avatar",
+							"type": "file",
+							"src": "/Users/tepexic/Desktop/1.jpeg"
+						}
+					]
+				},
+				"url": "http://localhost:8080/api/upload"
+			},
+			"response": []
+		},
+		{
+			"name": "Signup",
 			"request": {
 				"method": "POST",
 				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/admin/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"admin",
-						""
-					]
-				}
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"mojarra\",\n    \"password\": \"password123\",\n    \"email\": \"admin@ecommerce.com\",\n    \"name\": \"Pedro Paramo\",\n    \"address\": \"Avenida Falsa #123\",\n    \"age\": \"33\",\n    \"phone\": \"+5215511941899\",\n    \"avatar\": \"/C8DBC146-2E6A-8680-5595-6FFDA26B78B7.png\",\n    \"isAdmin\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/auth/signup"
 			},
 			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "usuario@coder.com",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "coderhouse",
+							"type": "default"
+						}
+					]
+				},
+				"url": "http://localhost:8080/api/auth/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Admin data",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{cookie}}",
+						"type": "default"
+					}
+				],
+				"url": "http://localhost:8080/api/admin/"
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar Admin Data",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{cookie}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"bethany.tillman27@ethereal.email\",\n    \"phone\": \"+5215511941899\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/admin/"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "eCommerceCookie",
+			"value": "connect.sid=s%3A1D_e-0jIzY1e4c70JuPplXdykaVH_ZhA.o5JOxleRYOmSMlBZ2aZ3Z8lwtPt%2FLLlKb%2Bl5%2FZ4hfK0; Path=/; Expires=Tue, 18 Jan 2022 20:56:30 GMT; HttpOnly"
+		},
+		{
+			"key": "cookie",
+			"value": "connect.sid=s%3A_mQ_6EI2GLYgpnOJYPgqhzXP9UB0sX5k.vSP0sMtiNqk5UWF%2F2bI6op7lOniMGPLyvn3zE8zzi4M; Path=/; Expires=Fri, 21 Jan 2022 00:38:38 GMT; HttpOnly"
+		},
+		{
+			"key": "producto",
+			"value": "6199aea731c8dc46ddf32e41"
+		},
+		{
+			"key": "carrito",
+			"value": "61e9fe821821baa3f93c14e9"
 		}
 	]
 }

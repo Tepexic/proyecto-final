@@ -25,7 +25,7 @@ server.use(
     origin: [
       "http://localhost:8080",
       "http://localhost:8081",
-      "https://proyecto-final-coderhouse.netlify.app",
+      "https://proyecto-final-coderhouse.netlify.app/",
     ],
     credentials: true,
   })
