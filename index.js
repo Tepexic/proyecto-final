@@ -30,6 +30,7 @@ server.use(
 server.use(express.json());
 server.use(express.urlencoded({ encoded: true }));
 server.use(express.static("public"));
+server.set("trust proxy", 1);
 server.use(
   session({
     store: new MongoStore({
@@ -37,10 +38,12 @@ server.use(
       MongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
     }),
     secret: "qwertyuiop",
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     cookie: {
       maxAge: 1000 * 60 * 10,
+      sameSite: env === "production" ? "none" : "lax", // must be 'none' to enable cross-site delivery
+      secure: env === "production", // must be true if sameSite='none'
     },
   })
 );
