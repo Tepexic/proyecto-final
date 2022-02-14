@@ -9,8 +9,7 @@ const express = require("express");
 const { Router } = express;
 
 const { ProductsDao } = require("./../daos");
-const { isIdValid, withAsync } = require("./../utils/helpers");
-const isAdmin = require("./../middleware/isAdmin");
+const { withAsync } = require("./../utils/helpers");
 
 const productosRouter = Router();
 
@@ -39,7 +38,7 @@ productosRouter.get("/:id", async (req, res) => {
   }
 });
 
-productosRouter.post("/", isAdmin, async (req, res) => {
+productosRouter.post("/", async (req, res) => {
   const productoNuevo = req.body;
   productoNuevo.timestamp = Date.now();
   const { error, data } = await withAsync(
@@ -59,7 +58,7 @@ productosRouter.post("/", isAdmin, async (req, res) => {
   }
 });
 
-productosRouter.put("/:id", isAdmin, async (req, res) => {
+productosRouter.put("/:id", async (req, res) => {
   const id =
     process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
   const { error, data } = await withAsync(
@@ -86,7 +85,7 @@ productosRouter.put("/:id", isAdmin, async (req, res) => {
   }
 });
 
-productosRouter.delete("/:id", isAdmin, async (req, res) => {
+productosRouter.delete("/:id", async (req, res) => {
   const id =
     process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
   const { error, data } = await withAsync(

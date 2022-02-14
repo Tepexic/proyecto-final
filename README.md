@@ -1,8 +1,26 @@
-# Proyecto final
+# Desafío Clase 40 - DIVIDIR EN CAPAS NUESTRO PROYECTO
+
+## Consignas:
+
+- Modificar la capa de persistencia incorporando los conceptos de Factory, DAO, y DTO.
+- Los DAOs deben presentar la misma interfaz hacia la lógica de negocio de nuestro servidor.
+- El DAO seleccionado (por un parámetro en línea de comandos como lo hicimos anteriormente) será devuelto por una Factory para que la capa de negocio opere con el.
+- Cada uno de estos casos de persistencia, deberán ser implementados usando el patrón singleton que impida crear nuevas instancias de estos mecanismos de acceso a los datos.
+- Comprobar que si llamo a la factory dos veces, con una misma opción elegida, devuelva la misma instancia.
+- Implementar el patrón Repository para la persistencia de productos y mensajes.
+
+## Correr localmente el proyecto
+
+- Instalar dependencias: `npm install`
+- Modo de desarrollo con `nodemon`: `npm run dev`
+- Correr localmente: `npm run start`
+
+## Notas
 
 API RESTful de productos y carrito de compras.
 
 Incorpora las siguientes rutas:
+
 - GET '/api/productos' -> devuelve todos los productos.
 - GET '/api/productos/:id' -> devuelve un producto según su id.
 - POST '/api/productos' -> recibe y agrega un producto, y lo devuelve con su id asignado (solo para administradores).
@@ -10,6 +28,7 @@ Incorpora las siguientes rutas:
 - DELETE '/api/productos/:id' -> elimina un producto según su id (solo para administradores).
 
 Cada producto estará representado por un objeto con el siguiente formato:
+
 ```
 {
     "id": 0,
@@ -23,6 +42,7 @@ Cada producto estará representado por un objeto con el siguiente formato:
 ```
 
 Para el carrito, se tienen los siguientes métodos:
+
 - POST: '/' - Crea un carrito y devuelve su id.
 - DELETE: '/:id' - Vacía un carrito y lo elimina.
 - GET: '/:id/productos' - Me permite listar todos los productos guardados en el carrito
@@ -30,6 +50,7 @@ Para el carrito, se tienen los siguientes métodos:
 - DELETE: '/:id/productos/:id_prod' - Eliminar un producto del carrito por su id de carrito y de producto
 
 Cada carrito estará representado por un objeto con el siguiente formato:
+
 ```
 {
     "id": 0,
@@ -37,23 +58,3 @@ Cada carrito estará representado por un objeto con el siguiente formato:
     "productos": []
 }
 ```
-
-
-## Notas Adicionales:
-Hay una ruta adicional con dos métodos:
-- GET: '/' - Obtiene si el usuario es admin { admin: true/false }
-- POST: '/' - Cambia el estado del usuario de true a false o viceversa
-
-
-El archivo `ProyectoFinal.postman_collection.json` contiene la colección de postman de todos los endpoints implementados
-
-## Instalación
-Con nodemon:
-
-`nodemon server.js`
-
-O bien:
-
-`npm install`
-
-`npm run serve`

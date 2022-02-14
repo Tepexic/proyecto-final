@@ -7,9 +7,8 @@
 
 const express = require("express");
 const cors = require("cors");
-const productos = require("./routes/productos");
-const carrito = require("./routes/carrito");
-const admin = require("./routes/admin");
+const productos = require("./routers/productos");
+const carrito = require("./routers/carrito");
 
 const server = express();
 
@@ -21,7 +20,6 @@ server.use(cors());
 // Usar rutas
 server.use("/api/productos/", productos);
 server.use("/api/carrito/", carrito);
-server.use("/api/admin/", admin);
 
 // rutas no definidas
 server.use((req, res) => {
