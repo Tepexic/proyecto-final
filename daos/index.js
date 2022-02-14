@@ -3,19 +3,24 @@ const ProductsDAOMongo = require("./productos/ProductDAOMongo");
 const CartDAOFile = require("./carrito/CartDAOFile");
 const CartDAOMongo = require("./carrito/CartDAOMongo");
 
-if (process.env.TYPE === "mongodb") {
-  module.exports = {
-    ProductsDao: new ProductsDAOMongo(),
-    CartDao: new CartDAOMongo(),
-  };
-} else if (process.env.TYPE === "file") {
-  module.exports = {
-    ProductsDao: ProductsDAOFile,
-    CartDao: CartDAOFile,
-  };
-} else {
-  console.log("TYPE: ", process.env.TYPE);
-  throw new Error(
-    "No se ha especificado el tipo de base de datos o no es valido"
-  );
+class PersistenceFactory {
+  getProductsDAO() {
+    if (process.env.TYPE === "file") {
+      return ProductsDAOFile;
+    } else {
+      return new ProductsDAOMongo();
+    }
+  }
+
+  getCartDAO() {
+    if (process.env.TYPE === "file") {
+      return CartDAOFile;
+    } else {
+      return new CartDAOMongo();
+    }
+  }
 }
+
+const persistenceFactory = new PersistenceFactory();
+
+module.exports = persistenceFactory;

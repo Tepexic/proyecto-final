@@ -11,7 +11,8 @@
 
 const express = require("express");
 const { Router } = express;
-const { CartDao } = require("./../daos");
+const persistenceFactory = require("./../daos");
+const CartDao = persistenceFactory.getCartDAO();
 const { withAsync } = require("./../utils/helpers");
 
 const carritoRouter = Router();

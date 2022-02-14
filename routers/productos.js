@@ -8,7 +8,8 @@
 const express = require("express");
 const { Router } = express;
 
-const { ProductsDao } = require("./../daos");
+const persistenceFactory = require("./../daos");
+const ProductsDao = persistenceFactory.getProductsDAO();
 const { withAsync } = require("./../utils/helpers");
 
 const productosRouter = Router();
