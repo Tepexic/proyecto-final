@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --verbose --coverage --forceExit --maxWorkers=1",
-    "serve": "npm run server.js",
-    "dev": "nodemon server.js"
+    "serve": "npm run server.js file",
+    "dev": "nodemon server.js file"
   },
   "keywords": [],
   "author": "",

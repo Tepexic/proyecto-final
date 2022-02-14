@@ -5,8 +5,9 @@ const CartDAOMongo = require("./carrito/CartDAOMongo");
 
 class PersistenceFactory {
   constructor() {
-    this.argsv = process.argv.slice(2) || ["file"];
-    this.persistenceMode = this.argsv[0];
+    this.argsv = process.argv.slice(2);
+    this.persistenceMode = this.argsv[0] || "file";
+    this.id = Math.random();
   }
 
   getProductsDAO() {

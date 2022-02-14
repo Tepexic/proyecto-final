@@ -7,13 +7,40 @@
 - El DAO seleccionado (por un parámetro en línea de comandos como lo hicimos anteriormente) será devuelto por una Factory para que la capa de negocio opere con el.
 - Cada uno de estos casos de persistencia, deberán ser implementados usando el patrón singleton que impida crear nuevas instancias de estos mecanismos de acceso a los datos.
 - Comprobar que si llamo a la factory dos veces, con una misma opción elegida, devuelva la misma instancia.
-- Implementar el patrón Repository para la persistencia de productos y mensajes.
+
+### Resolución de la última consigna
+
+Para comparar las instancias de las factories, hice un script en (`./utils/comprobacion.js`). Al correrlo, arroja el siguiente resultado:
+
+```
+Comparacion entre ambas factories
+Con tiple igual:  true
+Con Object.is(): true
+Comparar id de las factories
+Factory 1:  0.9596735206148772
+Factory 2:  0.9596735206148772
+Comparacion entre ambos carritos
+Con tiple igual:  true
+Con Object.is(): true
+```
 
 ## Correr localmente el proyecto
 
 - Instalar dependencias: `npm install`
 - Modo de desarrollo con `nodemon`: `npm run dev`
 - Correr localmente: `npm run start`
+
+El modo de persistencia por defecto en estos comandos es de archivo (ver archivo `package.json`), si desea cambiarse por mongo, correr:
+
+```
+node server.js mongo
+```
+
+o bien:
+
+```
+nodemon server.js mongo
+```
 
 ## Notas
 
