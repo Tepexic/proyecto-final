@@ -4,8 +4,13 @@ const CartDAOFile = require("./carrito/CartDAOFile");
 const CartDAOMongo = require("./carrito/CartDAOMongo");
 
 class PersistenceFactory {
+  constructor() {
+    this.argsv = process.argv.slice(2) || ["file"];
+    this.persistenceMode = this.argsv[0];
+  }
+
   getProductsDAO() {
-    if (process.env.TYPE === "file") {
+    if (this.persistenceMode.includes("file")) {
       return ProductsDAOFile;
     } else {
       return new ProductsDAOMongo();
@@ -13,7 +18,7 @@ class PersistenceFactory {
   }
 
   getCartDAO() {
-    if (process.env.TYPE === "file") {
+    if (this.persistenceMode.includes("file")) {
       return CartDAOFile;
     } else {
       return new CartDAOMongo();

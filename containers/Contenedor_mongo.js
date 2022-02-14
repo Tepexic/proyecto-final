@@ -39,11 +39,11 @@ class Contenedor {
     try {
       const searchResult = await this.collection.findOne({ _id: id });
       if (searchResult) {
-        if (process.env.TYPE === "file") {
-          return { data: searchResult.length ? searchResult : null };
-        } else {
-          return { data: searchResult };
-        }
+        // if (process.env.TYPE === "file") {
+        //   return { data: searchResult.length ? searchResult : null };
+        // } else {
+        return { data: searchResult };
+        // }
       }
       return { data: null };
     } catch (error) {

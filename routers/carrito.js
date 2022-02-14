@@ -42,7 +42,9 @@ carritoRouter.post("/", async (req, res) => {
 
 carritoRouter.delete("/:id", async (req, res) => {
   const id =
-    process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
+    persistenceFactory.persistenceMode === "file"
+      ? parseInt(req.params.id)
+      : req.params.id;
   // consulta solo si el is es válido
   const { error, data } = await withAsync(CartDao.deleteById, CartDao, id);
   if (error) {
@@ -57,7 +59,9 @@ carritoRouter.delete("/:id", async (req, res) => {
 
 carritoRouter.get("/:id/productos", async (req, res) => {
   const id =
-    process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
+    persistenceFactory.persistenceMode === "file"
+      ? parseInt(req.params.id)
+      : req.params.id;
   // consulta solo si el is es válido
   const { error, data } = await withAsync(CartDao.getById, CartDao, id);
   if (error) {
@@ -72,7 +76,9 @@ carritoRouter.get("/:id/productos", async (req, res) => {
 
 carritoRouter.post("/:id/productos/:id_prod", async (req, res) => {
   const id =
-    process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
+    persistenceFactory.persistenceMode === "file"
+      ? parseInt(req.params.id)
+      : req.params.id;
   // Obtener el carrito en cuestión
   const { error, data } = await withAsync(CartDao.getById, CartDao, id);
   if (error) {
@@ -106,9 +112,11 @@ carritoRouter.post("/:id/productos/:id_prod", async (req, res) => {
 
 carritoRouter.delete("/:id/productos/:id_prod", async (req, res) => {
   const id =
-    process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
+    persistenceFactory.persistenceMode === "file"
+      ? parseInt(req.params.id)
+      : req.params.id;
   const id_prod =
-    process.env.TYPE === "file"
+    persistenceFactory.persistenceMode === "file"
       ? parseInt(req.params.id_prod)
       : req.params.id_prod;
   const { error, data } = await withAsync(CartDao.getById, CartDao, id);

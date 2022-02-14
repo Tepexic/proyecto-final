@@ -27,7 +27,9 @@ productosRouter.get("/", async (req, res) => {
 
 productosRouter.get("/:id", async (req, res) => {
   const id =
-    process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
+    persistenceFactory.persistenceMode === "file"
+      ? parseInt(req.params.id)
+      : req.params.id;
   const { error, data } = await withAsync(ProductsDao.getById, ProductsDao, id);
   if (error) {
     return res.status(500).json(error);
@@ -61,7 +63,9 @@ productosRouter.post("/", async (req, res) => {
 
 productosRouter.put("/:id", async (req, res) => {
   const id =
-    process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
+    persistenceFactory.persistenceMode === "file"
+      ? parseInt(req.params.id)
+      : req.params.id;
   const { error, data } = await withAsync(
     ProductsDao.updateById,
     ProductsDao,
@@ -88,7 +92,9 @@ productosRouter.put("/:id", async (req, res) => {
 
 productosRouter.delete("/:id", async (req, res) => {
   const id =
-    process.env.TYPE === "file" ? parseInt(req.params.id) : req.params.id;
+    persistenceFactory.persistenceMode === "file"
+      ? parseInt(req.params.id)
+      : req.params.id;
   const { error, data } = await withAsync(
     ProductsDao.deleteById,
     ProductsDao,
