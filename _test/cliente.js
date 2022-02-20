@@ -1,5 +1,5 @@
-const Api = require("./../utils/api");
-const withAsync = require("./../utils/withAsync");
+const Api = require("../utils/api");
+const withAsync = require("../utils/withAsync");
 
 class ProductosApi extends Api {
   fetchProducts() {
