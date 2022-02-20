@@ -121,7 +121,22 @@ Borrar producto por id ---------------------
 
 El archivo que contiene las pruebas de los servicios de `/productos` se encuentra en `./test/apiTest.test.js`. Para ejecutar las pruebas con mocha hay que correr `npm run test:mocha`.
 
-El reporte completo se encuentra en [./mochawesome-report/mochawesome.html](/mochawesome-report/mochawesome.html)
+El resultado por consola es:
+
+```
+
+  Probar la api de productos con chai y supertest
+    ✔ Deberia obtener todos los productos con status 200
+    ✔ Deberia obtener un producto por su id
+    ✔ Debería crear un nuevo producto
+    ✔ Debería actualizar un  producto con su id
+    ✔ Deberia borrar un producto por su id
+
+
+  5 passing (37ms)
+```
+
+El reporte completo se encuentra en [./mochawesome-report/mochawesome.html](https://htmlpreview.github.io/?https://github.com/Tepexic/proyecto-final/blob/desafio-clase-42/mochawesome-report/mochawesome.html)
 
 ## Servicios
 
