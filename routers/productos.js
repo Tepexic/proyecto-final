@@ -1,113 +1,65 @@
-/**
- * El router base '/api/productos' implementará cuatro funcionalidades:
- * - GET: '/:id?' - Me permite listar todos los productos disponibles ó un producto por su id (disponible para usuarios y administradores)
- * - POST: '/' - Para incorporar productos al listado (disponible para administradores)
- * - PUT: '/:id' - Actualiza un producto por su id (disponible para administradores)
- * - DELETE: '/:id' - Borra un producto por su id (disponible para administradores)
- */
-const express = require("express");
-const { Router } = express;
+const graphqlHTTP = require("express-graphql").graphqlHTTP;
+const buildSchema = require("graphql").buildSchema;
 
 const persistenceFactory = require("./../daos");
 const ProductsDao = persistenceFactory.getProductsDAO();
-const { withAsync } = require("./../utils/helpers");
 
-const productosRouter = Router();
-
-const errorMsg = { error: "producto no encontrado" };
-
-productosRouter.get("/", async (req, res) => {
-  const { error, data } = await withAsync(ProductsDao.getAll, ProductsDao);
-  if (error) {
-    return res.status(500).json(error);
-  } else {
-    return res.json(data);
+const productSchema = buildSchema(`
+  type Product {
+    _id: Int!
+    nombre: String!
+    precio: Float!
+    descripcion: String
+    codigo: String
+    foto: String
+    stock: Int
   }
-});
-
-productosRouter.get("/:id", async (req, res) => {
-  const id =
-    persistenceFactory.persistenceMode === "file"
-      ? parseInt(req.params.id)
-      : req.params.id;
-  const { error, data } = await withAsync(ProductsDao.getById, ProductsDao, id);
-  if (error) {
-    return res.status(500).json(error);
-  } else {
-    if (data) return res.json(data);
-    // error si no se encontró
-    res.status(404);
-    return res.json(errorMsg);
+  type Query {
+    getProduct(_id: Int): Product
+    getProducts: [Product]
+  } 
+  type Mutation {
+    createProduct(nombre: String!, descripcion: String, codigo: Int, precio: Float, foto: String, stock: Int): Product
+    updateProduct(_id: Int!, nombre: String, descripcion: String, codigo: Int, precio: Float, foto: String, stock: Int): Product
+    deleteProduct(_id: Int!): Product
   }
-});
+`);
 
-productosRouter.post("/", async (req, res) => {
-  const productoNuevo = req.body;
-  productoNuevo.timestamp = Date.now();
-  const { error, data } = await withAsync(
-    ProductsDao.save,
-    ProductsDao,
-    productoNuevo
-  );
-  console.log(error, data);
-  if (error) {
-    return res.status(500).json(error);
-  } else {
-    res.status(201);
-    res.send({
-      message: "success",
-      data: { _id: data, ...productoNuevo },
-    });
-  }
-});
-
-productosRouter.put("/:id", async (req, res) => {
-  const id =
-    persistenceFactory.persistenceMode === "file"
-      ? parseInt(req.params.id)
-      : req.params.id;
-  const { error, data } = await withAsync(
-    ProductsDao.updateById,
-    ProductsDao,
-    id,
-    req.body
-  );
-  if (error) {
-    return res.status(500).json(error);
-  } else {
-    if (data) {
-      res.status(201);
-      res.send({
-        message: "success",
-        data: { ...req.body },
-      });
-      return;
-    } else {
-      res.status(404);
-      res.send(errorMsg);
-      return;
-    }
-  }
-});
-
-productosRouter.delete("/:id", async (req, res) => {
-  const id =
-    persistenceFactory.persistenceMode === "file"
-      ? parseInt(req.params.id)
-      : req.params.id;
-  const { error, data } = await withAsync(
-    ProductsDao.deleteById,
-    ProductsDao,
-    id
-  );
-  if (error) {
-    return res.status(500).json(error);
-  } else {
-    if (data) return res.json({ result: "success" });
-    // error si no se encontró
-    res.status(404);
-    return res.json(errorMsg);
-  }
+const productosRouter = graphqlHTTP({
+  schema: productSchema,
+  rootValue: {
+    getProduct: async ({ _id }) => {
+      const product = await ProductsDao.getById(_id);
+      return product.data;
+    },
+    getProducts: async () => {
+      const products = await ProductsDao.getAll();
+      return products.data;
+    },
+    createProduct: async (data) => {
+      const product = await ProductsDao.save(data);
+      return product.data;
+    },
+    updateProduct: async (data) => {
+      const product = await ProductsDao.getById(_id);
+      const updateResult = await ProductsDao.updateById(data._id, data);
+      if (updateResult.data) {
+        return product.data;
+      } else {
+        throw new Error("producto no encontrado");
+      }
+    },
+    deleteProduct: async ({ _id }) => {
+      const product = await ProductsDao.getById(_id);
+      const deleteResult = await ProductsDao.deleteById(_id);
+      if (deleteResult.data) {
+        return product.data;
+      } else {
+        throw new Error("producto no encontrado");
+      }
+    },
+  },
+  graphiql: true,
 });
 
 module.exports = productosRouter;

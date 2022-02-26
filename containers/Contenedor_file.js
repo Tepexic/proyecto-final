@@ -45,7 +45,7 @@ class Contenedor {
       this.fileContent.push({ ...element, _id: newId });
       // Guardar archivo con el nuevo elemento
       await this.writeFile();
-      return { data: newId };
+      return { data: { ...element, _id: newId } };
     } catch (error) {
       console.error(error);
       throw error;
