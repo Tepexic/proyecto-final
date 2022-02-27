@@ -1,159 +1,71 @@
-/**
- * El router base '/api/carrito' implementará tres rutas disponibles para usuarios y administradores:
- * - POST: '/' - Crea un carrito y devuelve su id.
- * - DELETE: '/:id' - Vacía un carrito y lo elimina.
- * - GET: '/:id/productos' - Me permite listar todos los productos guardados en el carrito
- * - POST: '/:id/productos' - Para incorporar productos al carrito por su id de producto
- * - DELETE: '/:id/productos/:id_prod' - Eliminar un producto del carrito por su id de carrito y de producto
- * El carrito de compras tendrá la siguiente estructura:
- * id, timestamp(carrito), producto: { id, timestamp(producto), nombre, descripcion, código, foto (url), precio, stock }
- */
-
-const express = require("express");
-const { Router } = express;
+const graphqlHTTP = require("express-graphql").graphqlHTTP;
+const buildSchema = require("graphql").buildSchema;
 const persistenceFactory = require("./../daos");
 const CartDao = persistenceFactory.getCartDAO();
-const { withAsync } = require("./../utils/helpers");
 
-const carritoRouter = Router();
-
-const errorMsg = {
-  error: -3,
-  descripcion: "Carrito no encontrado",
-};
-
-carritoRouter.post("/", async (req, res) => {
-  const carritoNuevo = {
-    timestamp: Date.now(),
-    productos: [],
-  };
-  const { error, data } = await withAsync(CartDao.save, CartDao, carritoNuevo);
-  if (error) {
-    res.status(500).json(error);
-  } else {
-    const newId = data;
-    res.status(201);
-    res.send({
-      message: "success",
-      data: { _id: newId, ...carritoNuevo },
-    });
+const cartSchema = buildSchema(`
+  type Cart {
+    _id: Int!
+    productos: [Int]
   }
-});
-
-carritoRouter.delete("/:id", async (req, res) => {
-  const id =
-    persistenceFactory.persistenceMode === "file"
-      ? parseInt(req.params.id)
-      : req.params.id;
-  // consulta solo si el is es válido
-  const { error, data } = await withAsync(CartDao.deleteById, CartDao, id);
-  if (error) {
-    res.status(500).json(error);
-  } else {
-    if (data) return res.json({ result: "success" });
-    // error si no se encontró
-    res.status(404);
-    return res.json(errorMsg);
+  type Query {
+    getCart(_id: Int): Cart
   }
-});
-
-carritoRouter.get("/:id/productos", async (req, res) => {
-  const id =
-    persistenceFactory.persistenceMode === "file"
-      ? parseInt(req.params.id)
-      : req.params.id;
-  // consulta solo si el is es válido
-  const { error, data } = await withAsync(CartDao.getById, CartDao, id);
-  if (error) {
-    res.status(500).json(error);
-  } else {
-    if (data) return res.json(data.productos);
-    // error si no se encontró
-    res.status(404);
-    return res.json(errorMsg);
+  type Mutation {
+    createCart: Cart
+    deleteCart(_id: Int): Cart
+    addProductToCart(_id: Int, idProd: Int): Cart
+    deleteProductFromCart(_id: Int, idProd: Int): Cart
   }
-});
+`);
 
-carritoRouter.post("/:id/productos/:id_prod", async (req, res) => {
-  const id =
-    persistenceFactory.persistenceMode === "file"
-      ? parseInt(req.params.id)
-      : req.params.id;
-  // Obtener el carrito en cuestión
-  const { error, data } = await withAsync(CartDao.getById, CartDao, id);
-  if (error) {
-    res.status(500).json(error);
-  } else {
-    if (data) {
-      // agregar producto al carrito
-      const producto = { _id: req.params.id_prod };
-      data.productos.push(producto);
-      const updateResult = await withAsync(
-        CartDao.updateById,
-        CartDao,
-        data._id,
-        data
-      );
-      if (updateResult.error) {
-        res.status(500).json(updateResult.error);
+carritoRouter = graphqlHTTP({
+  schema: cartSchema,
+  rootValue: {
+    getCart: async ({ _id }) => {
+      const cart = await CartDao.getById(_id);
+      return cart.data;
+    },
+    createCart: async () => {
+      const carritoNuevo = {
+        productos: [],
+      };
+      const newId = await CartDao.save(carritoNuevo);
+      return newId.data;
+    },
+    deleteCart: async ({ _id }) => {
+      const cart = await CartDao.getById(_id);
+      const deleteResult = await CartDao.deleteById(_id);
+      if (deleteResult.data) {
+        return cart.data;
       } else {
-        res.status(201);
-        return res.send({
-          message: "success",
-          data,
-        });
+        throw new Error("Carrito no encontrado");
       }
-    }
-    // error si no se encontró
-    res.status(404);
-    return res.json(errorMsg);
-  }
-});
-
-carritoRouter.delete("/:id/productos/:id_prod", async (req, res) => {
-  const id =
-    persistenceFactory.persistenceMode === "file"
-      ? parseInt(req.params.id)
-      : req.params.id;
-  const id_prod =
-    persistenceFactory.persistenceMode === "file"
-      ? parseInt(req.params.id_prod)
-      : req.params.id_prod;
-  const { error, data } = await withAsync(CartDao.getById, CartDao, id);
-  if (error) {
-    res.status(500).json(error);
-  } else {
-    if (data) {
-      const producto = data.productos.find((prod) => prod._id == id_prod);
-      if (producto) {
-        data.productos = data.productos.filter((prod) => prod._id != id_prod);
-        const updateResult = await withAsync(
-          CartDao.updateById,
-          CartDao,
-          data._id,
-          data
-        );
-        if (updateResult.error) {
-          res.status(500).json(updateResult.error);
-        } else {
-          res.status(200);
-          return res.send({
-            message: "success",
-            data: { data },
-          });
-        }
+    },
+    addProductToCart: async ({ _id, idProd }) => {
+      const cart = await CartDao.getById(_id);
+      cart.data.productos.push(idProd);
+      const updateResult = await CartDao.updateById(_id, cart.data);
+      console.log(cart.data);
+      if (updateResult.data) {
+        return cart.data;
+      } else {
+        throw new Error("Carrito no encontrado");
       }
-      // error si no se encontró
-      res.status(404);
-      return res.json({
-        error: -4,
-        descripcion: "Producto no encontrado en carrito",
-      });
-    }
-  }
-  // error si no se encontró
-  res.status(404);
-  return res.json(errorMsg);
+    },
+    deleteProductFromCart: async ({ _id, idProd }) => {
+      const cart = await CartDao.getById(_id);
+      const index = cart.data.productos.indexOf(idProd);
+      cart.data.productos.splice(index, 1);
+      const updateResult = await CartDao.updateById(_id, cart.data);
+      if (updateResult.data) {
+        return cart.data;
+      } else {
+        throw new Error("Carrito no encontrado");
+      }
+    },
+  },
+  graphiql: true,
 });
 
 module.exports = carritoRouter;

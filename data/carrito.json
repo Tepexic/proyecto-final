@@ -1,7 +1,1 @@
-[
-  {
-    "_id": 0,
-    "timestamp": 1635264142953,
-    "productos": []
-  }
-]
+[{"_id":0,"timestamp":1635264142953,"productos":[]},{"productos":[2],"_id":1}]
