@@ -1,28 +1,12 @@
-# Desafío Clase 40 - DIVIDIR EN CAPAS NUESTRO PROYECTO
+# Desafío Clase 42 - REFORMAR PARA USAR GRAPHQL
 
-## Consignas:
+## Consigna:
 
-- Modificar la capa de persistencia incorporando los conceptos de Factory, DAO, y DTO.
-- Los DAOs deben presentar la misma interfaz hacia la lógica de negocio de nuestro servidor.
-- El DAO seleccionado (por un parámetro en línea de comandos como lo hicimos anteriormente) será devuelto por una Factory para que la capa de negocio opere con el.
-- Cada uno de estos casos de persistencia, deberán ser implementados usando el patrón singleton que impida crear nuevas instancias de estos mecanismos de acceso a los datos.
-- Comprobar que si llamo a la factory dos veces, con una misma opción elegida, devuelva la misma instancia.
+- En base al último proyecto entregable de servidor API RESTful, reformar la capa de routeo y el controlador para que los requests puedan ser realizados a través del lenguaje de query GraphQL.
 
-### Resolución de la última consigna
+  Si tuviésemos un frontend, reformarlo para soportar GraphQL y poder dialogar apropiadamente con el backend y así realizar las distintas operaciones de pedir, guardar, actualizar y borrar recursos.
 
-Para comparar las instancias de las factories, hice un script en (`./utils/comprobacion.js`). Al correrlo, arroja el siguiente resultado:
-
-```
-Comparacion entre ambas factories
-Con tiple igual:  true
-Con Object.is(): true
-Comparar id de las factories
-Factory 1:  0.9596735206148772
-Factory 2:  0.9596735206148772
-Comparacion entre ambos carritos
-Con tiple igual:  true
-Con Object.is(): true
-```
+  Utilizar GraphiQL para realizar la prueba funcional de los querys y las mutaciones.
 
 ## Correr localmente el proyecto
 
@@ -42,46 +26,61 @@ o bien:
 nodemon server.js mongo
 ```
 
-## Notas
+## Serivios disponibles
 
-API RESTful de productos y carrito de compras.
+### Productos
 
-Incorpora las siguientes rutas:
-
-- GET '/api/productos' -> devuelve todos los productos.
-- GET '/api/productos/:id' -> devuelve un producto según su id.
-- POST '/api/productos' -> recibe y agrega un producto, y lo devuelve con su id asignado (solo para administradores).
-- PUT '/api/productos/:id' -> recibe y actualiza un producto según su id (solo para administradores).
-- DELETE '/api/productos/:id' -> elimina un producto según su id (solo para administradores).
-
-Cada producto estará representado por un objeto con el siguiente formato:
+Servicio que implementa GraphQL en la ruta `POST /api/productos/` bajo el siguiente esquema:
 
 ```
-{
-    "id": 0,
-    "nombre": "Cinta de reparación",
-    "descripcion": "Cinta de reparación de pantalla de 5x200CM",
-    "codigo": 1234567890,
-    "precio": 4922,
-    "foto": "https://ae01.alicdn.com/kf/H1b13e3760cc74dcd9b7e161256820bbdT/Cinta-de-reparaci-n-de-pantalla-de-5x200CM-parche-autoadhesivo-para-puerta-y-ventana-s-per.jpeg_Q90.jpeg_.webp",
-    "stock": 10
+Product {
+    _id: Int!
+    nombre: String!
+    precio: Float!
+    descripcion: String
+    codigo: String
+    foto: String
+    stock: Int
 }
 ```
 
-Para el carrito, se tienen los siguientes métodos:
-
-- POST: '/' - Crea un carrito y devuelve su id.
-- DELETE: '/:id' - Vacía un carrito y lo elimina.
-- GET: '/:id/productos' - Me permite listar todos los productos guardados en el carrito
-- POST: '/:id/productos' - Para incorporar productos al carrito por su id de producto
-- DELETE: '/:id/productos/:id_prod' - Eliminar un producto del carrito por su id de carrito y de producto
-
-Cada carrito estará representado por un objeto con el siguiente formato:
+Consultas:
 
 ```
-{
-    "id": 0,
-    "timestamp": 1635264142953,
-    "productos": []
-}
+    getProduct(_id: Int): Product
+    getProducts: [Product]
+```
+
+Mutaciones:
+
+```
+  createProduct(nombre: String!, descripcion: String, codigo: Int, precio: Float, foto: String, stock: Int): Product
+  updateProduct(_id: Int!, nombre: String, descripcion: String, codigo: Int, precio: Float, foto: String, stock: Int): Product
+  deleteProduct(_id: Int!): Product
+```
+
+### Carrito
+
+Servicio que implementa GraphQL en la ruta `POST /api/carrito/`. Cada carrito estará representado por un objeto con el siguiente esquema:
+
+```
+Cart {
+    _id: Int!
+    productos: [Int]
+  }
+```
+
+Consultas:
+
+```
+  getCart(_id: Int): Cart
+```
+
+Mutaciones:
+
+```
+createCart: Cart
+deleteCart(_id: Int): Cart
+addProductToCart(_id: Int, idProd: Int): Cart
+deleteProductFromCart(_id: Int, idProd: Int): Cart
 ```
