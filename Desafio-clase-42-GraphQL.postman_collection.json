@@ -1,0 +1,174 @@
+{
+	"info": {
+		"_postman_id": "0eb7a629-905e-4d19-8372-d9d4552722f7",
+		"name": "Desafio-clase-42-GraphQL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Obtener todos los productos",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\n    getProducts {\n        _id\n        nombre\n        precio\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": "http://localhost:8080/api/productos/"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener producto por id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\n    getProduct(_id:1) {\n        nombre\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": "http://localhost:8080/api/productos/"
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar producto",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\n    createProduct(\n        nombre: \"Auriculares TRN MT1\",\n        descripcion: \"Auriculares intrauditivos TRN MT1 con Monitor dinámico para DJ\",\n        codigo: 1234567896,\n        precio: 4500,\n        foto: \"https://ae01.alicdn.com/kf/H0964909d8652417fb5a0c318028f1025z/Auriculares-intrauditivos-TRN-MT1-con-Monitor-din-mico-para-DJ-aud-fonos-IEM-HIFI-deportivos-con.jpg_640x640.jpg\",\n        stock: 10\n    )\n    {\n        _id\n        nombre\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": "http://localhost:8080/api/productos/"
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar Prodcuto",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\n    updateProduct(\n        _id: 3,\n        nombre: \"Auriculares TRN MT1\",\n        descripcion: \"Auriculares intrauditivos TRN MT1 con Monitor dinámico para DJ\",\n        codigo: 1234567896,\n        precio: 4500,\n        foto: \"https://ae01.alicdn.com/kf/H0964909d8652417fb5a0c318028f1025z/Auriculares-intrauditivos-TRN-MT1-con-Monitor-din-mico-para-DJ-aud-fonos-IEM-HIFI-deportivos-con.jpg_640x640.jpg\",\n        stock: 10\n    )\n    {\n        _id\n        nombre\n        stock\n    }\n}",
+						"variables": ""
+					},
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/productos/"
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar producto por id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\n    deleteProduct(_id: 3) {\n        _id\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": "http://localhost:8080/api/productos/"
+			},
+			"response": []
+		},
+		{
+			"name": "Crear carrito",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\n    createCart {\n        _id\n        productos\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": "http://localhost:8080/api/carrito/"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener carrito por Id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\n    getCart(_id:1) {\n        _id\n        productos\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": "http://localhost:8080/api/carrito/"
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar carrito por id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\n    deleteCart(_id:2) {\n        _id\n        productos\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": "http://localhost:8080/api/carrito/"
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar producto al carrito por id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\n    addProductToCart(_id:1, idProd: 2) {\n        _id\n        productos\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": "http://localhost:8080/api/carrito/"
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar producto del carrito por id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\n    deleteProductFromCart(_id:1, idProd: 1) {\n        _id\n        productos\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": "http://localhost:8080/api/carrito/"
+			},
+			"response": []
+		}
+	]
+}
