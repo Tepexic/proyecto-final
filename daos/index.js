@@ -4,12 +4,12 @@ const CartDAOFile = require("./carrito/CartDAOFile");
 const CartDAOMongo = require("./carrito/CartDAOMongo");
 const UsersDAOFile = require("./users/UsersDAOFile");
 const UsersDAOMongo = require("./users/UsersDAOMongo");
-const AdminDAOFile = require("./admin/AdminDAOFile");
+const AdminDAOFile = require("./admin/AdminDaoFile");
 const AdminDao = require("./admin/AdminDao");
 
 class PersistenceFactory {
   constructor() {
-    this.persistenceMode = process.env.TYPE || "mongo";
+    this.persistenceMode = process.env.TYPE || "mongodb";
     this.id = Math.random();
     this.isFileSelected = this.persistenceMode.includes("file");
   }
