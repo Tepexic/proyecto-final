@@ -3,7 +3,8 @@ const uri = `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_P
 
 class Contenedor {
   constructor(collectionName, schema) {
-    this.collection = mongoose.model(collectionName, schema);
+    this.collection =
+      mongoose.models[collectionName] || mongoose.model(collectionName, schema);
     this.init();
   }
 

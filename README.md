@@ -15,27 +15,6 @@ Correr:
 O bien, en modo desarrollo con nodemon:
 `npm run dev`
 
-El archivo `.env` debe contener:
-
-```
-# Options: file, mongodb, firebase
-TYPE=mongodb
-# Mongo DB settings
-MONGO_DB_USER=jesus
-MONGO_DB_PASSWORD=8dQg6XUWTuRWZV
-USERS_DB=pf_users
-## Modo cluster
-SERVER_MODE=cluster
-## Node mailer
-EMAIL=bethany.tillman27@ethereal.email
-EMAIL_PASSWORD=pQuppmEj5TgFPX7XJM
-## Twilio
-TWILIO_SID=ACcc05e6c84ed93285de403cae28d4a553
-TWILIO_TOKEN=a3928ecd6e86ada7efbba85cd200d60b
-TWILIO_MESSAGING_SERVICE=MG65e1e89b327bf36fb96ba78616d87d50
-TWILIO_WHATSAPP=+14155238886
-```
-
 El proyecto se encuentra desplegado en Heroku (back end) y Netlify (front end).
 El front end se encuentra hecho en Vue:
 
