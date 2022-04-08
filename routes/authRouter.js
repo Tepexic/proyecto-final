@@ -8,8 +8,11 @@ const bcrypt = require("bcrypt");
 const logger = require("./../utils/logger");
 const { apiAuth } = require("./../middleware/auth");
 
-const { UsersDao } = require("./../daos");
-const { AdminDao } = require("./../daos");
+const persistenceFactory = require("./../daos");
+const AdminDao = persistenceFactory.getAdminDao();
+const UsersDao = persistenceFactory.getUsersDao();
+// const { UsersDao } = require("./../daos");
+// const { AdminDao } = require("./../daos");
 const { withAsync } = require("./../utils/helpers");
 
 /**

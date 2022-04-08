@@ -8,7 +8,9 @@
 const express = require("express");
 const { Router } = express;
 
-const { ProductsDao } = require("./../daos");
+const persistenceFactory = require("./../daos");
+const ProductsDao = persistenceFactory.getProductsDao();
+// const { ProductsDao } = require("./../daos");
 const { withAsync } = require("./../utils/helpers");
 const isAdmin = require("./../middleware/isAdmin");
 const { apiAuth } = require("./../middleware/auth");

@@ -1,6 +1,7 @@
 const express = require("express");
 const { Router } = express;
-const { AdminDao } = require("./../daos");
+const persistenceFactory = require("./../daos");
+const AdminDao = persistenceFactory.getAdminDao();
 const { withAsync } = require("./../utils/helpers");
 const { apiAuth } = require("./../middleware/auth");
 const logger = require("./../utils/logger");

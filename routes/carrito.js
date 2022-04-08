@@ -12,9 +12,15 @@
 
 const express = require("express");
 const { Router } = express;
-const { CartDao } = require("./../daos");
-const { ProductsDao } = require("./../daos");
-const { AdminDao } = require("./../daos");
+const persistenceFactory = require("./../daos");
+const AdminDao = persistenceFactory.getAdminDao();
+const CartDao = persistenceFactory.getCartDao();
+const ProductsDao = persistenceFactory.getProductsDao();
+// const UsersDao = persistenceFactory.getUsersDao();
+// const { CartDao } = require("./../daos");
+// const { ProductsDao } = require("./../daos");
+// const { AdminDao } = require("./../daos");
+
 const { withAsync } = require("./../utils/helpers");
 const { apiAuth } = require("./../middleware/auth");
 const logger = require("./../utils/logger");
