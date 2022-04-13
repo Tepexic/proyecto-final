@@ -1,8 +1,8 @@
 require("dotenv").config();
 
 const cluster = require("cluster");
-const app = require("./index");
-const PORT = process.env.PORT || 8080; // PORT is provided by Heroku
+const { httpServer } = require("./index");
+const PORT = process.env.PORT || 8081; // PORT is provided by Heroku
 const isCluster = process.env.SERVER_MODE === "cluster";
 
 const logger = require("./utils/logger");
@@ -20,7 +20,7 @@ if (isCluster && cluster.isMaster) {
     });
   });
 } else {
-  app.listen(PORT, () =>
+  httpServer.listen(PORT, () =>
     logger.info({
       ruta: null,
       metodo: null,

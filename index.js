@@ -9,13 +9,22 @@ const logger = require("./utils/logger");
 
 const server = express();
 
+// Socket.io
+const { Server } = require("socket.io");
+const { createServer } = require("http");
+const httpServer = createServer(server);
+const io = new Server(httpServer, {
+  /* options */
+});
+const persistenceFactory = require("./daos");
+const { withAsync } = require("./utils/helpers");
+
 // Session and authentication
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const session = require("express-session");
 
 // middleware
-const env = process.env.NODE_ENV || "development";
 server.use(
   cors({
     origin: [
@@ -74,4 +83,28 @@ server.on("error", (err) => {
   logger.info({ ruta: null, metodo: null, error: err });
 });
 
-module.exports = server;
+const MessagesDao = persistenceFactory.getMessagesDao();
+io.on("connection", async (socket) => {
+  logger.info({
+    ruta: "socket",
+    metodo: null,
+    error: "Un cliente se ha conectado",
+  });
+  socket.emit("messages", await MessagesDao.getAll());
+  // Añadir nuevo mensaje y emitir nueva lista
+  socket.on("new-message", async (data) => {
+    logger.info({
+      ruta: "socket new message",
+      metodo: null,
+      error: `Nuevo mensaje: ${data}`,
+    });
+    const { error } = await withAsync(MessagesDao.save, MessagesDao, data);
+    if (error) {
+      logger.error({ ruta: "socket error", metodo: null, error: err });
+    } else {
+      socket.emit("messages", await MessagesDao.getAll());
+    }
+  });
+});
+
+module.exports = { server, httpServer };

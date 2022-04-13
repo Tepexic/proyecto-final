@@ -1,0 +1,30 @@
+[
+  {
+    "_id": "5b9f4f6a7b25b04b8e8b4567",
+    "author": "ana@tienda2.com",
+    "text": "Hola, Saben como puedo agregar un producto a mi carrito?",
+    "timestamp": "24/1/2022 10:14:27",
+    "avatar": "/C8DBC146-2E6A-8680-5595-6FFDA26B78B7.png"
+  },
+  {
+    "_id": "5b9f4f6a7b25b04b8e8b4568",
+    "author": "admin@tienda.com",
+    "text": "HOla, da clic en el boton de agregar al carrito. Aparecerá una notificación de que el producto se ha agregado al carrito.",
+    "timestamp": "24/1/2022 10:15:27",
+    "avatar": "/C8DBC146-2E6A-8680-5595-6FFDA26B78B7.png"
+  },
+  {
+    "_id": "5b9f4f6a7b25b04b8e8b4569",
+    "author": "ana@tienda2.com",
+    "text": "Muchas gracias",
+    "timestamp": "24/1/2022 10:16:27",
+    "avatar": "/C8DBC146-2E6A-8680-5595-6FFDA26B78B7.png"
+  },
+  {
+    "_id": "5b9f4f6a7b25b04b8e8b456a",
+    "author": "admin@tienda.com",
+    "text": "Un placer atenderle",
+    "timestamp": "24/1/2022 10:17:27",
+    "avatar": "/C8DBC146-2E6A-8680-5595-6FFDA26B78B7.png"
+  }
+]
