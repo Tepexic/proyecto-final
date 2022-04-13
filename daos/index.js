@@ -6,6 +6,8 @@ const UsersDAOFile = require("./users/UsersDAOFile");
 const UsersDAOMongo = require("./users/UsersDAOMongo");
 const AdminDAOFile = require("./admin/AdminDaoFile");
 const AdminDao = require("./admin/AdminDao");
+const MessagesDAOFile = require("./messages/MessagesDAOFile");
+const MessagesDAOMongo = require("./messages/MessagesDAOMongo");
 
 class PersistenceFactory {
   constructor() {
@@ -43,6 +45,14 @@ class PersistenceFactory {
       return AdminDAOFile;
     } else {
       return new AdminDao();
+    }
+  }
+
+  getMessagesDao() {
+    if (this.isFileSelected) {
+      return MessagesDAOFile;
+    } else {
+      return new MessagesDAOMongo();
     }
   }
 }
