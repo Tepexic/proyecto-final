@@ -24,6 +24,8 @@ const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const session = require("express-session");
 
+const env = process.env.NODE_ENV || "development";
+
 // middleware
 server.use(
   cors({
